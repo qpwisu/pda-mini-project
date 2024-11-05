@@ -1,0 +1,62 @@
+-- create database news_db;
+-- use news_db;
+CREATE TABLE User (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+-- News Table
+CREATE TABLE News (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    preview TEXT NOT NULL,
+    url VARCHAR(255),
+    imageURL VARCHAR(255),
+    content TEXT NOT NULL,
+    published_at DATETIME   -- 필드명 수정
+);
+-- Comment Table
+CREATE TABLE Comment (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    news_id INT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
+    FOREIGN KEY (news_id) REFERENCES News(id) ON DELETE CASCADE
+);
+
+-- Like Table
+CREATE TABLE news_like (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    news_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
+    FOREIGN KEY (news_id) REFERENCES News(id) ON DELETE CASCADE,
+    UNIQUE (user_id, news_id)  -- 좋아요 중복 방지
+);
+
+-- term like Table
+CREATE TABLE term_like (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    term_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
+    FOREIGN KEY (term_id) REFERENCES term(id) ON DELETE CASCADE,
+    UNIQUE (user_id, term_id)  -- 좋아요 중복 방지
+);
+
+-- Term Table
+CREATE TABLE Term (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    term_name VARCHAR(255) UNIQUE NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
