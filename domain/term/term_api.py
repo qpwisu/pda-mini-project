@@ -12,7 +12,7 @@ async def create_term():
     return {"message": "Create a term"}
 
 @router.put("/{term_id}")
-async def update_term(term_id: int):
+async def update_telsrm(term_id: int):
     return {"message": f"Updated term with ID {term_id}"}
 
 @router.delete("/{term_id}")
