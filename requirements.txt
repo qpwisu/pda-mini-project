@@ -13,3 +13,4 @@ typing_extensions==4.12.2
 uvicorn==0.32.0
 pymysql==1.1.1
 passlib[bcrypt]==1.7.4
+PyJWT==2.9.0
