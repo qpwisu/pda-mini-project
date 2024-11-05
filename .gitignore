@@ -1,0 +1,5 @@
+*.pyc
+.DS_Storevenv/
+__pycache__/
+*.pyc
+.DS_Store
