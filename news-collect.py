@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import re
+import time
+
 
 id = 1
 
@@ -19,6 +21,7 @@ def get_detail(url):
         content = soup.select_one('.newsct_article').get_text(strip=True)
         content = re.sub(r'[\n\t\r]+', '', content)
 
+        time.sleep(2)
         return {"date": date, "content": content}
 
     except Exception as e:
