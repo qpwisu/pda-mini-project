@@ -2,17 +2,16 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Response
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
-from database import SessionLocal
-from models import User
+from .database import SessionLocal
+from .models import User
 from pydantic import BaseModel
 from datetime import datetime, timedelta
 from datetime import timedelta
 import jwt
+router = APIRouter()
 
 
 # 실행 : uvicorn user_api:router --reload  
-router = APIRouter()
-router = FastAPI()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto") # 비밀번호 캐싱.
 
 # JWT 설정
