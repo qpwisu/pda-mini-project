@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey, DATETIME
 from sqlalchemy.orm import relationship
-from database import Base
+from .database import Base
 
 # User 모델
 class User(Base):
