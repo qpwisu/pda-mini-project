@@ -1,0 +1,16 @@
+{
+  // 이 설정으로 alias 설정된 경로를 compiler에서 인식하고 import from에서 from절을 클릭하면 이동할 수 있게 됨.
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "~/*": ["src/*"],
+        "~/components/*": ["src/components/*"],
+        "~/lib/*": ["src/lib/*"],
+        "~/routers/*": ["src/routers/*"],
+        "~/routes/*": ["src/routes/*"],
+        "~/pages/*": ["src/pages/*"]
+      }
+    },
+    "exclude": ["node_modules", "dist"]
+  }
+  
