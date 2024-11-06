@@ -1,5 +1,6 @@
 import subprocess
 
+
 print("Running news-collect.py...")
 subprocess.run(["python3", "news-collect.py"])
 print("Finished running news-collect.py")
