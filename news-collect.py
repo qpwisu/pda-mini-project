@@ -36,7 +36,7 @@ def main():
 
     news = []
 
-    while len(all_news) < 100:
+    while len(all_news) < 30:
         response = requests.get(f'https://news.naver.com/breakingnews/section/101/259?page={page}')
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
