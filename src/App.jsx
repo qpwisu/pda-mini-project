@@ -1,15 +1,11 @@
 //import './App.css'
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import MainPage from './components/pages/mainPage/main';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { RouterProvider } from "react-router-dom";
+import mainRouter from "~/routers/main-router";
 
 function App() {
-
-  return (
-      <div>
-        <MainPage />
-      </div>
-  )
+  return <RouterProvider router={mainRouter} />;
 }
 
-export default App
+export default App;
