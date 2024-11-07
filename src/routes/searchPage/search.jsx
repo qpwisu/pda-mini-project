@@ -115,7 +115,7 @@ export default function Search() {
                 </Card.Text>
                 <div className="result-card-footer">
                   <span>{result.date}</span>
-                  <span>{result.category}</span>
+                  <span className="news-category">{result.category}</span>
                 </div>
               </Card.Body>
             </Card>
@@ -126,7 +126,7 @@ export default function Search() {
           <Button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            variant="outline-primary"
+            variant="outline"
             className="pagination-button"
           >
             <ChevronLeft className="me-2" /> 이전
@@ -139,7 +139,7 @@ export default function Search() {
               setCurrentPage((prev) => Math.min(prev + 1, totalPages))
             }
             disabled={currentPage === totalPages}
-            variant="outline-primary"
+            variant="outline"
             className="pagination-button"
           >
             다음 <ChevronRight className="ms-2" />
