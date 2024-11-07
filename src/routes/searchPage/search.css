@@ -45,7 +45,7 @@
   .result-card {
     margin-bottom: 1.5rem;
     border: none;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Bootstrap shadow-sm 효과 */
+    box-shadow: 0 0.125rem 0.25rem 0.3rem rgba(0, 0, 0, 0.075); /* Bootstrap shadow-sm 효과 */
     border-radius: 10px;
   }
   
@@ -75,14 +75,29 @@
   
   /* Pagination Buttons */
   .pagination-button {
-    font-weight: 600;
+    color: #F7964C;
+    font-weight: 700; 
     display: flex;
     align-items: center;
     border-radius: 5px;
   }
+
+  .pagination-button:disabled {
+    font-weight: 700; 
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    background-color: #d3d3d3; 
+    color: #6c757d; 
+    border-color: #d3d3d3;
+  }
   
   .pagination-info {
     font-weight: bold;
-    color: #6c757d; /* Bootstrap text-secondary 색상 */
+    color: #F7964C;
     font-size: 0.875rem;
+  }
+
+  .news-category {
+    font-weight: bold;
   }
