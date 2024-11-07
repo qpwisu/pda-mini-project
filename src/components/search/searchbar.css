@@ -1,0 +1,68 @@
+/* Modal 바깥 부분을 반투명하게 설정 */
+.custom-backdrop {
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검정 배경 */
+}
+
+/* 모달 내부 스타일 */
+.search-container {
+  background-color: white;
+}
+
+.suggestions-card {
+  background-color: white; /* 추천 검색어 카드의 배경색 */
+}
+
+.suggestions-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.suggestions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.suggestion-button {
+  font-size: 0.875rem;
+}
+
+.search-button {
+  background-color: #71D8E3;
+  color: white;
+  font-weight: bold;
+}
+
+.search-button:hover {
+  background-color: #5BC0CB;
+}
+
+.search-results {
+  margin-top: 1rem;
+}
+
+.results-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.result-card {
+  background-color: white;
+}
+
+.result-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.result-date {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.card-body {
+  background-color: white;
+  border-color: black;
+}

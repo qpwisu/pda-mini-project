@@ -14,7 +14,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import MainPage from '~/routes/mainPage/main';
 import Layout from '~/components/common/Layout';
 
-import MyPage from '~/routes/myPage/myPage'
+import MyPage from '~/routes/myPage/myPage';
 import SignUp from '~/routes/signupPage/signup';
 import NewsDetail from '~/routes/newsDetailPage/NewsDetail';
 import Search from '~/routes/searchPage/search';
@@ -28,7 +28,7 @@ export const mainRoutes = [
       { element: <MyPage />, path: 'mypage' },
       { element: <NewsDetail />, path: 'detail' },
       { element: <Search />, path: 'search' },
-      { element: <SignUp />, path: 'signup' }
+      { element: <SignUp />, path: 'signup' },
     ],
   },
 ];
