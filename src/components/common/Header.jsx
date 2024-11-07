@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import {
   Container,
   Nav,
@@ -8,7 +9,7 @@ import {
   Form,
 } from 'react-bootstrap';
 
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 // import useAuth from '~/lib/hooks/useAuth';
 // import { serverLogout } from '~/lib/apis/auth';
 import { useNavigate } from 'react-router-dom';
@@ -23,11 +24,19 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
   const searchButton = () => {
     if (query.trim()) {
       navigate(`/search`, { state: { query } });
+      setQuery('');
       console.log(query)
     } else {
       alert('검색어를 입력하세요.');
     }
-    
+  }
+
+  const mainButton = () => {
+    navigate(`/`)
+  }
+
+  const myPageBtn = () => {
+    navigate(`/mypage`)
   }
   // 로그인 기능 관련 코드를 주석 처리하여 현재 로그인 상태와 관계없이 Navbar를 렌더링합니다.
   // const { user, clientLogout } = useAuth();
@@ -98,7 +107,7 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
     // </Navbar>
     <Navbar expand="lg" className="bg-body-tertiary" style={{padding: "0"}}>
       <Container fluid style={{background: "#FFF7F0", height: '60px'}}>
-        <Navbar.Brand href="#" style={{ color: '#F8C39A', fontWeight: 'bold', fontSize: "25px"}}>
+        <Navbar.Brand href="#" style={{ color: '#F8C39A', fontWeight: 'bold', fontSize: "25px"}} onClick={mainButton}>
           Economic
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
@@ -119,12 +128,17 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
             <Button variant="outline-success" onClick={searchButton} style={{ backgroundColor: '#F8C39A', borderColor: '#F8C39A', color: 'white' }}>Search</Button>
           </Form>
           <NavDropdown
-            title="MyPage"
+            title={
+              <img
+              src="https://m.weekly.cnbnews.com/data/photos/20221146/art_146799_1668757924.png"
+              alt="MyPage"
+              style={{ borderRadius: '50%', width: '50px', height:'40px' }}
+              />}
             id="navbarScrollingDropdown"
             align="end"
             style={{ marginLeft: '30px', marginRight: '20px'}}
           >
-            <NavDropdown.Item href="#policy">Economic Policy</NavDropdown.Item>
+            <NavDropdown.Item href="#policy" onClick={myPageBtn}>MyPage</NavDropdown.Item>
             <NavDropdown.Item href="#company">Companies</NavDropdown.Item>
             <NavDropdown.Item href="#finance">Finance</NavDropdown.Item>
             <NavDropdown.Item href="#global">Global</NavDropdown.Item>
