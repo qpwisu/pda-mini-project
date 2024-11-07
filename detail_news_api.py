@@ -2,7 +2,7 @@ import pymysql
 import json
 from flashtext import KeywordProcessor
 from datetime import datetime
-import os
+import os,re
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -49,10 +49,32 @@ def enrich_content(content, terms):
     # content 텍스트에서 키워드 매칭 및 대체
     return keyword_processor.replace_keywords(content)
 
+# def enrich_content(content, terms):
+#     keyword_processor = KeywordProcessor()
+#
+#     # 키워드를 추가 (이때 설명은 필요하지 않으므로 생략)
+#     for term in terms:
+#         keyword_processor.add_keyword(term)
+#
+#     # content에서 키워드 추출 (중복 방지를 위해 set 사용)
+#     extracted_keywords = list(dict.fromkeys(keyword_processor.extract_keywords(content)))
+#
+#     # 각 키워드의 첫 번째 등장 위치만 변경
+#     for term in extracted_keywords:
+#         description = terms[term]
+#         # 첫 번째 등장 위치만 찾기
+#         matches = list(re.finditer(rf'\b({re.escape(term)})\b', content))
+#         if matches:
+#             # 첫 번째 일치 항목의 위치에만 <i> 태그를 추가
+#             first_match = matches[0]
+#             start, end = first_match.span()
+#             content = f"{content[:start]}{term}<i>{description}</i>{content[end:]}"
+#
+#     return content
 
-# news.json 파일에서 데이터 상위 10개 읽기
+# news.json 파일에서 데이터읽기
 def load_news():
-    json_file_path = './news.json'  # 경로를 알맞게 수정하세요
+    json_file_path = './news.json'
     try:
         with open(json_file_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
