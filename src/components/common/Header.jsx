@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Container,
   Nav,
@@ -10,10 +11,24 @@ import {
 import { Link } from 'react-router-dom';
 // import useAuth from '~/lib/hooks/useAuth';
 // import { serverLogout } from '~/lib/apis/auth';
+import { useNavigate } from 'react-router-dom';
 
 const EXPAND_BREAKPOINT = 'md';
 
 export default function MyNavbar({ brandTitle, offCanvasTitle }) {
+  const [query, setQuery] = useState("")
+  const navigate = useNavigate()
+
+  //검색 버튼
+  const searchButton = () => {
+    if (query.trim()) {
+      navigate(`/search`, { state: { query } });
+      console.log(query)
+    } else {
+      alert('검색어를 입력하세요.');
+    }
+    
+  }
   // 로그인 기능 관련 코드를 주석 처리하여 현재 로그인 상태와 관계없이 Navbar를 렌더링합니다.
   // const { user, clientLogout } = useAuth();
   return (
@@ -82,15 +97,15 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
     //   </Container>
     // </Navbar>
     <Navbar expand="lg" className="bg-body-tertiary" style={{padding: "0"}}>
-      <Container fluid style={{background: "#FFF7F0"}}>
+      <Container fluid style={{background: "#FFF7F0", height: '60px'}}>
         <Navbar.Brand href="#" style={{ color: '#F8C39A', fontWeight: 'bold', fontSize: "25px"}}>
           Economic
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#all">All</Nav.Link>
+            {/* <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="#all">All</Nav.Link> */}
           </Nav>
           <Form className="d-flex">
             <Form.Control
@@ -98,8 +113,10 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
               placeholder="Search"
               className="me-2"
               aria-label="Search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />
-            <Button variant="outline-success" style={{ backgroundColor: '#F8C39A', borderColor: '#F8C39A', color: 'white' }}>Search</Button> {/* Button 컴포넌트 사용 */}
+            <Button variant="outline-success" onClick={searchButton} style={{ backgroundColor: '#F8C39A', borderColor: '#F8C39A', color: 'white' }}>Search</Button>
           </Form>
           <NavDropdown
             title="MyPage"
