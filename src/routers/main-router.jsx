@@ -27,7 +27,7 @@ export const mainRoutes = [
     children: [
       { element: <MainPage />, index: true },
       { element: <MyPage />, path: 'mypage' },
-      { element: <NewsDetail />, path: 'detail' },
+      { element: <NewsDetail />, path: 'detail/:idx' },
       { element: <Search />, path: 'search' },
       { element: <SignUp />, path: 'signup' },
       { element: <Login />, path: 'login' },
