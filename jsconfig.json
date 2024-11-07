@@ -8,7 +8,7 @@
         "~/lib/*": ["src/lib/*"],
         "~/routers/*": ["src/routers/*"],
         "~/routes/*": ["src/routes/*"],
-        "~/pages/*": ["src/pages/*"]
+        "~/pages/*": ["src/routes/*"]
       }
     },
     "exclude": ["node_modules", "dist"]

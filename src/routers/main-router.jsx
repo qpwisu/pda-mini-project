@@ -11,18 +11,24 @@
 
 import { createBrowserRouter } from 'react-router-dom';
 
-import MainPage from '~/routes/main/page';
-import LayoutPage from '~/routes/layout/page';
+import MainPage from '~/routes/mainPage/main';
+import Layout from '~/components/common/Layout';
 
-import SearchResultsPage from '~/routes/search/page';
+import MyPage from '~/routes/myPage/myPage'
+import SignUp from '~/routes/signupPage/signup';
+import NewsDetail from '~/routes/newsDetailPage/NewsDetail';
+import Search from '~/routes/searchPage/search';
 
 export const mainRoutes = [
   {
     path: '/',
-    element: <LayoutPage />,
+    element: <Layout brandTitle="Your Brand" offCanvasTitle="Menu" />,
     children: [
       { element: <MainPage />, index: true },
-      { element: <SearchResultsPage />, path: 'search' },
+      { element: <MyPage />, path: 'mypage' },
+      { element: <NewsDetail />, path: 'detail' },
+      { element: <Search />, path: 'search' },
+      { element: <SignUp />, path: 'signup' }
     ],
   },
 ];
