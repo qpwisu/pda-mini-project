@@ -16,6 +16,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '~/store': '/src/store',
       '~/components': '/src/components',
       '~/lib': '/src/lib',
       '~/routes': '/src/routes',

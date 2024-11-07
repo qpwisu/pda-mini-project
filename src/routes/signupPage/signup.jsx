@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Button, Card, InputGroup } from 'react-bootstrap';
+import { Form, Button, Card, InputGroup, Alert } from 'react-bootstrap';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 
@@ -9,8 +9,16 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [isEmailChecked, setIsEmailChecked] = useState(false);
+  const [emailCheckMessage, setEmailCheckMessage] = useState('');
 
   const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!isEmailChecked) {
+      setEmailCheckMessage('이메일 중복 확인을 해주세요.');
+      return;
+    }
+
     event.preventDefault();
     fetch('/api/users/api/v1/signup', {
       method: 'POST',
@@ -26,6 +34,34 @@ export default function Signup() {
       })
       .then((data) => {
         console.log(data);
+      });
+  };
+
+  const handleEmailCheck = () => {
+    // 이메일이 비어 있는지 확인
+    if (!email.trim()) {
+      setEmailCheckMessage('이메일을 입력하세요.');
+      setIsEmailChecked(false);
+      return;
+    }
+
+    fetch(`/api/users/api/v1/verify-email/${email}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        if (data.detail.message === 'Email already exists') {
+          setEmailCheckMessage('이미 사용 중인 이메일입니다.');
+          setIsEmailChecked(false);
+        } else {
+          setEmailCheckMessage('사용 가능한 이메일입니다.');
+          setIsEmailChecked(true);
+        }
+      })
+      .catch(() => {
+        setEmailCheckMessage('잘못된 입력입니다.');
       });
   };
 
@@ -50,12 +86,29 @@ export default function Signup() {
 
             <Form.Group controlId="email" className="mb-3">
               <Form.Label>이메일</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="name@example.com"
-                required
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <InputGroup>
+                <Form.Control
+                  type="email"
+                  placeholder="name@example.com"
+                  required
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setIsEmailChecked(false); // 이메일 변경 시 중복 확인 상태 초기화
+                    setEmailCheckMessage(''); // 메시지 초기화
+                  }}
+                />
+                <Button variant="outline-secondary" onClick={handleEmailCheck}>
+                  중복 확인
+                </Button>
+              </InputGroup>
+              {emailCheckMessage && (
+                <Alert
+                  variant={isEmailChecked ? 'success' : 'danger'}
+                  className="mt-2"
+                >
+                  {emailCheckMessage}
+                </Alert>
+              )}
             </Form.Group>
 
             <Form.Group controlId="password" className="mb-3">

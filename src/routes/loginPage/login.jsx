@@ -1,11 +1,20 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Form, Button, Card, InputGroup } from 'react-bootstrap';
 import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
+import { checkAuth } from '~/store/authSlice';
+import { useSelector } from 'react-redux';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { status, error, isLoggedIn, user } = useSelector(
+    (state) => state.auth
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -16,12 +25,18 @@ export default function Login() {
       headers: { 'Content-type': 'application/json' },
       credentials: 'include', // 쿠키를 자동으로 포함시킴
     })
-      .then((response) => {
-        console.log(response);
-
-        return response.json(); // JSON 응답 처리
+      .then((response) => response.json()) // JSON 응답 처리
+      .then((data) => {
+        console.log(data);
+        if (data.status === 'success') {
+          // 로그인 성공 시 인증 상태 확인
+          dispatch(checkAuth());
+          navigate('/'); // 로그인 후 홈 화면으로 이동
+        } else {
+          console.error('Login failed:', data.message);
+        }
       })
-      .then((data) => console.log(data));
+      .catch((error) => console.error('Error:', error));
   };
 
   return (
