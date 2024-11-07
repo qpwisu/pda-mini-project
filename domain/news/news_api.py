@@ -1,10 +1,12 @@
 # domain/news/news_api.py
 from fastapi import APIRouter
 from .detail_news_router import router as detail_router
+from .main_news_router import router as main_router
 
 router = APIRouter()
 
 router.include_router(detail_router, tags=["news"])
+router.include_router(main_router, tags=["newsMain"])
 
 # @router.get("/")
 # async def read_news():
