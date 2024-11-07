@@ -1,0 +1,123 @@
+/* myNews.css */
+
+.n-container {
+  border: 1px solid #ff6e00;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.news-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 20px;
+  gap: 16px;
+  justify-content: flex-start;
+  border-radius: 8px;
+}
+
+.news-card {
+  position: relative;
+  width: 350px;
+  height: 400px;
+  flex: 0 0 auto;
+  margin: 8px;
+  border: 1px solid #f7964c;
+  border-radius: 8px;
+  background-color: #FFF7F0;
+  scroll-snap-align: start;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 10px;
+
+}
+
+.news-image {
+  width: 100%;
+  height: 180px; /* 높이를 180px로 설정 */
+  object-fit: cover;
+  border-radius: 8px 8px 0 0; /* 위쪽 모서리 둥글게 */
+}
+
+.delete-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  color: #ff5c5c;
+}
+
+.news-card h2 {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* 구분선 스타일 */
+.separator {
+  border: none;
+  border-top: 1px solid #302d2d;
+  width: 100%;
+}
+
+.news-contents {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto; /* 세로 스크롤 활성화 */
+  padding: 10px;
+  text-align: center;
+}
+.news-contents p {
+  color : #929191
+}
+/* 스크롤바 스타일 */
+.news-contents::-webkit-scrollbar {
+  width: 8px;
+}
+
+.news-contents::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.news-contents::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}
+
+.news-contents::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+
+
+.news-card hr{
+  margin: 0;
+}
+
+.sub-title {
+  font-weight: bold;
+  color:#F7964C
+}
+
+
+.container-fluid{
+  padding : 10px;
+  background: #fcac66;
+}
+
