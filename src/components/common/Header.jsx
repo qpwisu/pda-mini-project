@@ -9,7 +9,7 @@ import {
   Form,
 } from 'react-bootstrap';
 
-//import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import useAuth from '~/lib/hooks/useAuth';
 // import { serverLogout } from '~/lib/apis/auth';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +25,8 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
 
   // Redux 상태에서 로그인 상태와 사용자 정보를 가져옴
   const { isLoggedIn, user } = useSelector((state) => state.auth);
+  console.log('isLoggedIn', isLoggedIn);
+  console.log('user', user);
 
   //검색 버튼
   const searchButton = () => {
@@ -36,6 +38,11 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
       alert('검색어를 입력하세요.');
     }
   };
+  // 로그아웃 버튼 클릭 시
+  const handleLogout = () => {
+    dispatch(logout()); // 로그아웃 액션 dispatch
+    navigate('/'); // 메인 페이지로 이동
+  };
 
   const mainButton = () => {
     navigate(`/`);
@@ -44,8 +51,7 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
   const myPageBtn = () => {
     navigate(`/mypage`);
   };
-  // 로그인 기능 관련 코드를 주석 처리하여 현재 로그인 상태와 관계없이 Navbar를 렌더링합니다.
-  // const { user, clientLogout } = useAuth();
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary" style={{ padding: '0' }}>
       <Container fluid style={{ background: '#FFF7F0', height: '60px' }}>

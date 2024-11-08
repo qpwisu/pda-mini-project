@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Card, InputGroup } from 'react-bootstrap';
 import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
-import { checkAuth } from '~/store/authSlice';
+import { checkAuth, loginSuccess, loginFailure } from '~/store/authSlice';
 import { useSelector } from 'react-redux';
 
 export default function Login() {
@@ -15,6 +15,11 @@ export default function Login() {
   const { status, error, isLoggedIn, user } = useSelector(
     (state) => state.auth
   );
+  // console.log(status);
+  // console.log('user updated', user);
+  console.log('redux-user', user);
+  console.log('redux-isloggedin', isLoggedIn);
+  console.log('redux-status', status);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -27,16 +32,22 @@ export default function Login() {
     })
       .then((response) => response.json()) // JSON 응답 처리
       .then((data) => {
-        console.log(data);
         if (data.status === 'success') {
-          // 로그인 성공 시 인증 상태 확인
-          dispatch(checkAuth());
+          const userData = data.data.user;
+          console.log(userData);
+          dispatch(loginSuccess(userData)); // 로그인 성공 시 유저 정보를 Redux에 저장
+          sessionStorage.setItem('user', JSON.stringify(userData));
           navigate('/'); // 로그인 후 홈 화면으로 이동
         } else {
-          console.error('Login failed:', data.message);
+          console.log(data);
+          console.log('Login failed:', data.detail.status);
+          dispatch(loginFailure(data.detail.status));
         }
       })
-      .catch((error) => console.error('Error:', error));
+      .catch((error) => {
+        console.error('Error:', error);
+        dispatch(loginFailure(error.message));
+      });
   };
 
   return (
