@@ -81,9 +81,8 @@ def login(email: str = Body(...), password: str = Body(...), response: Response=
             samesite="lax",
         )
     user_data = {
-        "id": db_user['id'],
-        "email": db_user['email'],
-        "password": db_user['password']
+        "username": db_user['username'],
+        "email": db_user['email']
     }
         
     return success_response(data={"message": "Login successful", "user": user_data})
