@@ -1,103 +1,96 @@
-/* SearchResultsPage.css */
+/* search.css */
 
-/* Container */
-.search-results-container {
-    min-height: 100vh;
-    background-color: #FFF7F0; /* Bootstrap의 bg-light 색상 */
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
-  
-  /* Title */
-  .search-results-title {
-    color: #F7964C;
-    font-weight: 700;
-    margin-bottom: 3rem;
-    text-align: center;
-  }
-  
-  /* Input Group */
-  .search-input-group {
-    position: relative;
-    flex-grow: 1;
-  }
-  
-  .search-input {
-    padding-left: 2.5rem; /* 아이콘 공간 확보 */
-    border-radius: 10px;
-  }
-  
-  .search-icon {
-    position: absolute;
-    top: 50%;
-    left: 1rem;
-    transform: translateY(-50%);
-    color: #b0b3b8;
-  }
-  
-  /* Filter Select */
-  .filter-select {
-    width: 25%;
-    border-radius: 10px;
-  }
-  
-  /* Card */
-  .result-card {
-    margin-bottom: 1.5rem;
-    border: none;
-    box-shadow: 0 0.125rem 0.25rem 0.3rem rgba(0, 0, 0, 0.075); /* Bootstrap shadow-sm 효과 */
-    border-radius: 10px;
-  }
-  
-  .result-card-body {
-    padding: 1.5rem;
-  }
-  
-  .result-card-title {
-    color: #F7964C;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-  
-  .result-card-summary {
-    color: #6c757d; /* Bootstrap text-muted 색상 */
-    margin-bottom: 1rem;
-    font-weight: bold;
-    font-size: 0.95rem;
-  }
-  
-  .result-card-footer {
-    display: flex;
-    justify-content: space-between;
-    color: #6c757d;
-    font-size: 0.85rem;
-  }
-  
-  /* Pagination Buttons */
-  .pagination-button {
-    color: #F7964C;
-    font-weight: 700; 
-    display: flex;
-    align-items: center;
-    border-radius: 5px;
-  }
+.container.search-results-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
 
-  .pagination-button:disabled {
-    font-weight: 700; 
-    display: flex;
-    align-items: center;
-    border-radius: 5px;
-    background-color: #d3d3d3; 
-    color: #6c757d; 
-    border-color: #d3d3d3;
-  }
-  
-  .pagination-info {
-    font-weight: bold;
-    color: #F7964C;
-    font-size: 0.875rem;
-  }
+.search-results-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #e34348;
+  margin-bottom: 40px;
+}
 
-  .news-category {
-    font-weight: bold;
-  }
+.result-card {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.result-card:hover {
+  transform: scale(1.02);
+}
+
+.result-card-body {
+  padding: 20px;
+}
+
+.result-card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.result-card-summary {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.result-card-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #888;
+}
+
+.news-category {
+  color: #e34348;
+  font-weight: bold;
+}
+
+.pagination-button {
+  color: #e34348;
+  font-weight: bold;
+  border-radius: 20px;
+}
+
+.pagination-button:hover {
+  background-color: #e34348;
+  color: white;
+}
+
+.pagination-button:disabled {
+  font-weight: 700; 
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  background-color: #d3d3d3; 
+  color: #6c757d; 
+  border-color: #d3d3d3;
+}
+
+.pagination-info {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.next-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 필요에 따라 left, right로 조정 가능합니다 */
+}
+
+.links {
+  text-decoration: 'none'; 
+  color: 'inherit';
+}
