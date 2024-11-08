@@ -21,7 +21,6 @@ export default function AuthProvider({ children }) {
   const clientLogin = useCallback((user) => {
     setUser(user);
     // 1번째 방법
-    // sessionStorage.setItem(AUTH_KEY, JSON.stringify(user));
   }, []);
 
   const clientLogout = useCallback(() => {
