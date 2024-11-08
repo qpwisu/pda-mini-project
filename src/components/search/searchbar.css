@@ -1,68 +1,78 @@
-/* Modal 바깥 부분을 반투명하게 설정 */
-.custom-backdrop {
-  background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검정 배경 */
-}
-
-/* 모달 내부 스타일 */
-.search-container {
-  background-color: white;
-}
-
-.suggestions-card {
-  background-color: white; /* 추천 검색어 카드의 배경색 */
-}
-
-.suggestions-title {
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.suggestions-list {
+.search-bar-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  justify-content: center;
 }
 
-.suggestion-button {
-  font-size: 0.875rem;
+.search-bar-form {
+  width: 100%;
+  max-width: 700px;
+  margin: auto;
+  position: relative;
 }
 
-.search-button {
-  background-color: #71D8E3;
-  color: white;
+.search-bar-input {
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  padding: 10px 40px 10px 20px; /* 오른쪽 아이콘 공간 확보 */
   font-weight: bold;
-}
-
-.search-button:hover {
-  background-color: #5BC0CB;
-}
-
-.search-results {
-  margin-top: 1rem;
-}
-
-.results-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.result-card {
-  background-color: white;
-}
-
-.result-title {
+  color: #e34348;
+  outline: none;
   font-size: 1rem;
-  font-weight: 600;
+  box-shadow: none;
+  transition: border-color 0.3s ease;
+  width: 100%;
 }
 
-.result-date {
-  font-size: 0.875rem;
-  color: #6c757d;
+.search-bar-input:focus {
+  color: #e34348;
+  border-color: #e34348;
+  box-shadow: 0 0 5px rgba(227, 67, 72, 0.5);
 }
 
-.card-body {
+.search-bar-button {
+  border: none;
+  background-color: transparent;
+  color: #e34348;
+  position: absolute;
+  right: 30px; /* 입력 필드 오른쪽에 고정 */
+  top: 50%;
+  transform: translateY(-50%); /* 세로로 가운데 정렬 */
+  font-size: 1.2rem;
+  padding: 0;
+  cursor: pointer;
+}
+
+.suggestions-dropdown {
+  border-radius: 15px;
+  position: absolute;
+  width: 100%;
+  overflow-y: auto;
+  border: 1px solid #ddd;
   background-color: white;
-  border-color: black;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+}
+
+.suggestion-item {
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.input-group {
+  width: 100%;
+}
+
+.input-group .btn {
+  z-index: 5;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
 }

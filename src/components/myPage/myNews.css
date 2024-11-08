@@ -1,20 +1,21 @@
 /* myNews.css */
 
 .n-container {
-  border: 1px solid #ff6e00;
+  /* border: 1px solid #ff6e00; */
   background-color: #ffffff;
   padding: 40px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
   margin: 0 auto;
+  height: 545px;
+
 }
 
 .news-container {
   display: flex;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 0 20px;
   gap: 16px;
   justify-content: flex-start;
   border-radius: 8px;
@@ -26,9 +27,9 @@
   height: 400px;
   flex: 0 0 auto;
   margin: 8px;
-  border: 1px solid #f7964c;
+  /* border: 1px solid #f7964c; */
   border-radius: 8px;
-  background-color: #FFF7F0;
+  background-color: #f5f4f4;
   scroll-snap-align: start;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -61,6 +62,10 @@
 }
 
 .news-card h2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 300px;
   font-size: 1.2rem;
   margin: 10px 0;
   color: #333;
@@ -110,14 +115,18 @@
   margin: 0;
 }
 
-.sub-title {
+.sub-title{
   font-weight: bold;
-  color:#F7964C
+  margin-bottom: 20px;
+
+  /* color:#F7964C */
 }
+
+
 
 
 .container-fluid{
   padding : 10px;
-  background: #fcac66;
+  /* background: #fcac66; */
 }
 

@@ -112,14 +112,14 @@ export default function Signup() {
 
   return (
     <div style={styles.container}>
-      <div style={styles.loginBox}>
-        <h2 style={styles.heading}>회원가입</h2>
-        <p className="text-center">
-          EconoNews의 회원이 되어 다양한 경제 뉴스를 만나보세요
-        </p>
+      <Card style={styles.loginBox}>
+        <Card.Header className="text-center" style={{ paddingTop: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <h2 style={styles.heading}>회원가입</h2>
+          <p className="text-muted">EconoNews의 회원이 되어 다양한<br /> 경제 뉴스를 만나보세요</p>
+        </Card.Header>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="name" className="mb-3">
-            <Form.Label>이름</Form.Label>
+            <Form.Label style={{marginTop: "10px"}}>이름</Form.Label>
             <Form.Control
               type="text"
               placeholder="홍길동"
@@ -215,16 +215,15 @@ export default function Signup() {
             회원가입
           </Button>
         </Form>
-
-        <div className="text-center mt-3">
-          <span className="text-muted">
+         <Card.Footer className="text-center">
+          <div className="text-muted mt-2">
             이미 계정이 있으신가요?{' '}
-            <Link to="/login" style={styles.linkText}>
+            <a href="/login" style={styles.linkText}>
               로그인
-            </Link>
-          </span>
-        </div>
-      </div>
+            </a>
+          </div>
+        </Card.Footer>
+      </Card>
     </div>
   );
 }

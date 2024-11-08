@@ -1,39 +1,52 @@
-// EconomicTerms.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './myTerm.css';
+import axios from 'axios';
 
-const initialTerms = [
-  { term: 'GDP', description: '국내총생산, 한 나라의 경제 활동을 나타내는 지표입니다. 이는 경제 규모를 측정하는 중요한 지표 중 하나로, 국민의 생활 수준과 경제 성장을 평가하는 데 사용됩니다.' },
-  { term: '인플레이션', description: '상품과 서비스의 전반적인 가격 수준이 상승하는 현상입니다. 인플레이션은 경제 성장을 저해할 수 있으며, 구매력 감소와 생활비 상승으로 이어질 수 있습니다.' },
-  { term: '디플레이션', description: '상품과 서비스의 전반적인 가격 수준이 하락하는 현상입니다. 디플레이션은 경제 활동을 둔화시키고, 실업률 증가와 같은 문제를 야기할 수 있습니다.' },
-  { term: '이자율', description: '대출이나 저축에 대해 지불되거나 받는 비율입니다. 이자율은 경제의 자금 흐름에 큰 영향을 미치며, 소비와 투자 결정을 좌우하는 중요한 요소입니다.' },
-  { term: '불황', description: '경제 활동이 둔화되어 GDP가 연속 두 분기 감소하는 현상입니다. 불황은 기업의 이익 감소와 실업률 증가로 이어질 수 있으며, 경제 전반에 부정적인 영향을 미칠 수 있습니다.' },
-  { term: 'GDP', description: '국내총생산, 한 나라의 경제 활동을 나타내는 지표입니다. 이는 경제 규모를 측정하는 중요한 지표 중 하나로, 국민의 생활 수준과 경제 성장을 평가하는 데 사용됩니다.의 경제 활동을 나타내는 지표입니다. 이는 경제 규모를 측정하는 중요한 지표 중 하나로, 국민의 생활 수준과 경제 성장을 평가하는 데 사용됩니다.의 경제 활동을 나타내는 지표입니다. 이는 경제 규모를 측정하는 중요한 지표 중 하나로, 국민의 생활 수준과 경제 성장을 평가하는 데 사용됩니다.' },
-  { term: '인플레이션', description: '상품과 서비스의 전반적인 가격 수준이 상승하는 현상입니다. 인플레이션은 경제 성장을 저해할 수 있으며, 구매력 감소와 생활비 상승으로 이어질 수 있습니다.' },
-  { term: '디플레이션', description: '상품과 서비스의 전반적인 가격 수준이 하락하는 현상입니다. 디플레이션은 경제 활동을 둔화시키고, 실업률 증가와 같은 문제를 야기할 수 있습니다.' },
-  { term: '이자율', description: '대출이나 저축에 대해 지불되거나 받는 비율입니다. 이자율은 경제의 자금 흐름에 큰 영향을 미치며, 소비와 투자 결정을 좌우하는 중요한 요소입니다.' },
-  { term: '불황', description: '경제 활동이 둔화되어 GDP가 연속 두 분기 감소하는 현상입니다. 불황은 기업의 이익 감소와 실업률 증가로 이어질 수 있으며, 경제 전반에 부정적인 영향을 미칠 수 있습니다.' },
-];
+export default function MyTerm() {
+  const [terms, setTerms] = useState([]); // 초기 상태를 빈 배열로 설정
 
-export default function EconomicTerms() {
-  const [terms, setTerms] = useState(initialTerms);
+  useEffect(() => {
+    const fetchLikedTerms = async () => {
+      try {
+        const response = await axios.get('/api/likes/term', {
+          withCredentials: true, // 쿠키를 요청에 자동으로 포함
+        });
+        setTerms(response.data.liked_terms || []); // 데이터가 없으면 빈 배열로 설정
+      } catch (error) {
+        console.error("Failed to fetch liked terms:", error);
+      }
+    };
+    
+    fetchLikedTerms();
+  }, []);
 
-  const handleDelete = (indexToDelete) => {
-    setTerms(terms.filter((_, index) => index !== indexToDelete));
+  const handleDelete = async (termId) => {
+    try {
+      await axios.delete(`/api/likes/term/${termId}`);
+      setTerms(terms.filter(term => term.idx !== termId));
+    } catch (error) {
+      console.error("Failed to delete liked term:", error);
+    }
   };
 
   return (
     <div className="t-container">
-      <h2 className='sub-title'>좋아요 누른 경제용어</h2>
+      <h3 className="sub-title">
+        좋아요 누른 <span style={{ color: "#E34348" }}>경제용어</span>
+      </h3>
       <div className="terms-container">
-        {terms.map((item, index) => (
-          <div className="term-card" key={index}>
-            <button className="delete-button" onClick={() => handleDelete(index)}>×</button>
-            <h2>{item.term}</h2>
-            <hr className="separator" /> {/* 구분선 추가 */}
-            <p>{item.description}</p>
-          </div>
-        ))}
+        {terms.length === 0 ? (
+          <p className="no-news-message">좋아요 누른 용어가 없습니다.</p>
+        ) : (
+          terms.map((item) => (
+            <div className="term-card" key={item.idx}>
+              <button className="delete-button" onClick={() => handleDelete(item.idx)}>×</button>
+              <h2>{item.term}</h2>
+              <hr className="separator" />
+              <p>{item.description}</p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
