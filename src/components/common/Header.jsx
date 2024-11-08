@@ -27,17 +27,7 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
   const { isLoggedIn, user } = useSelector((state) => state.auth);
   console.log('isLoggedIn', isLoggedIn);
   console.log('user', user);
-
-  //검색 버튼
-  const searchButton = () => {
-    if (query.trim()) {
-      navigate(`/search`, { state: { query } });
-      setQuery('');
-      console.log(query);
-    } else {
-      alert('검색어를 입력하세요.');
-    }
-  };
+  
   // 로그아웃 버튼 클릭 시
   const handleLogout = () => {
     dispatch(logout()); // 로그아웃 액션 dispatch
