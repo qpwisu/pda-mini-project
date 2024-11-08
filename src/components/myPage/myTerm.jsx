@@ -32,17 +32,21 @@ export default function MyTerm() {
   return (
     <div className="t-container">
       <h3 className="sub-title">
-      좋아요 누른 <span style={{ color: "#E34348" }}>경제용어</span>
+        좋아요 누른 <span style={{ color: "#E34348" }}>경제용어</span>
       </h3>
       <div className="terms-container">
-        {terms && terms.map((item) => (
-          <div className="term-card" key={item.idx}>
-            <button className="delete-button" onClick={() => handleDelete(item.idx)}>×</button>
-            <h2>{item.term}</h2>
-            <hr className="separator" />
-            <p>{item.description}</p>
-          </div>
-        ))}
+        {terms.length === 0 ? (
+          <p className="no-news-message">좋아요 누른 용어가 없습니다.</p>
+        ) : (
+          terms.map((item) => (
+            <div className="term-card" key={item.idx}>
+              <button className="delete-button" onClick={() => handleDelete(item.idx)}>×</button>
+              <h2>{item.term}</h2>
+              <hr className="separator" />
+              <p>{item.description}</p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
