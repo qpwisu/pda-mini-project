@@ -4,7 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import './searchbar.css';
 
-function NewSearchBar() {
+export default function SearchBar() {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
 
@@ -15,6 +15,13 @@ function NewSearchBar() {
       console.log(query);
     } else {
       alert('검색어를 입력하세요.');
+    }
+  };
+
+  // Enter 키 이벤트 처리 함수
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      searchButton();
     }
   };
 
@@ -31,7 +38,10 @@ function NewSearchBar() {
         />
         <Button
           variant="outline-secondary"
-          onClick={searchButton}
+          onClick={() => searchButton}
+          onKeyDown={(e) => {
+            handleKeyDown(e);
+          }}
           className="search-bar-button"
         >
           <FaSearch />
@@ -40,5 +50,3 @@ function NewSearchBar() {
     </Form>
   );
 }
-
-export default NewSearchBar;

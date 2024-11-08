@@ -1,9 +1,11 @@
 const BASE_URL = 'http://localhost:8000';
 
-export default async function fetchNewsBytitle(title, page) {
+export default async function fetchNewsBytitle(title, page, pageSize) {
   try {
     const res = await fetch(
-      `${BASE_URL}/search/title?first_keyword=${title}&page=${Number(page)}`,
+      `${BASE_URL}/search/title?first_keyword=${title}&page=${Number(
+        page
+      )}&page_size=${pageSize}`,
       {
         method: 'GET',
         headers: {
