@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Card, InputGroup } from 'react-bootstrap';
 import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
-import { checkAuth, loginSuccess, loginFailure } from '~/store/authSlice';
+import { loginSuccess, loginFailure } from '~/store/authSlice';
 import { useSelector } from 'react-redux';
 
 export default function Login() {
@@ -12,9 +12,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { status, error, isLoggedIn, user } = useSelector(
-    (state) => state.auth
-  );
+  const { status, isLoggedIn, user } = useSelector((state) => state.auth);
   // console.log(status);
   // console.log('user updated', user);
   console.log('redux-user', user);
