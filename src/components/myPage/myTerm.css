@@ -2,20 +2,21 @@
 
 /* 흰색 박스 스타일 */
 .t-container {
-  border: 1px solid #ff6e00;
+  /* border: 1px solid #ff6e00; */
   background-color: #ffffff;
   padding: 40px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   max-width: 100%;
   margin: 0 auto;
+  height: 350px;
+
 }
 
 .terms-container {
   display: flex;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 0px 20px;
   gap: 16px;
   justify-content: flex-start;
 }
@@ -27,9 +28,9 @@
   flex: 0 0 auto;
   padding: 20px;
   margin: 8px;
-  border: 1px solid #f7964c;
+  /* border: 1px solid #f7964c; */
   border-radius: 8px;
-  background-color: #FFF7F0; /* 카드 배경을 연한 회색으로 설정 */
+  background-color: #f5f4f4; /* 카드 배경을 연한 회색으로 설정 */
   scroll-snap-align: start;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -50,6 +51,7 @@
 }
 
 .term-card h2 {
+  
   font-size: 1.5rem;
   margin-bottom: 10px;
   color: #333;
@@ -92,7 +94,4 @@
 
 .term-card p {
   margin-bottom: 0; /* margin-bottom 제거 */
-}
-.sub-title{
-  color:#F7964C;
 }
