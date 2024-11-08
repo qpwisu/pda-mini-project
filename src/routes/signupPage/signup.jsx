@@ -11,6 +11,8 @@ export default function Signup() {
   const [password, setPassword] = useState('');
   const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [emailCheckMessage, setEmailCheckMessage] = useState('');
+  const emailPattern =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -19,7 +21,6 @@ export default function Signup() {
       return;
     }
 
-    event.preventDefault();
     fetch('/api/users/api/v1/signup', {
       method: 'POST',
       body: JSON.stringify({
@@ -40,22 +41,29 @@ export default function Signup() {
   const handleEmailCheck = () => {
     // 이메일이 비어 있는지 확인
     if (!email.trim()) {
-      setEmailCheckMessage('이메일을 입력하세요.');
+      setEmailCheckMessage('이메일을 입력하세요!');
       setIsEmailChecked(false);
       return;
     }
-
+    // email 유효성 검사.
+    if (!emailPattern.test(email)) {
+      setEmailCheckMessage('유효하지 않은 이메일 형식입니다.');
+      setIsEmailChecked(false);
+      return;
+    }
+    // email verify api 요청.
     fetch(`/api/users/api/v1/verify-email/${email}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
-        if (data.detail.message === 'Email already exists') {
+        console.log(data.data);
+
+        if (data.detail?.message === 'Email already exists') {
           setEmailCheckMessage('이미 사용 중인 이메일입니다.');
           setIsEmailChecked(false);
-        } else {
+        } else if (data.status === 'success') {
           setEmailCheckMessage('사용 가능한 이메일입니다.');
           setIsEmailChecked(true);
         }
@@ -64,6 +72,8 @@ export default function Signup() {
         setEmailCheckMessage('잘못된 입력입니다.');
       });
   };
+
+  // password 유효성 검사.
 
   const styles = {
     container: {
