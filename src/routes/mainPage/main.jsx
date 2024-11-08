@@ -8,7 +8,13 @@ import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FaSearch } from 'react-icons/fa';
 import defaultImage from '../../assets/image.svg';
 
-function NewsCard({ id, image, title, date, content }) {
+function NewsCard({
+    id,
+    image = defaultImage,
+    title = '제목 없음',
+    date = '날짜 없음',
+    content = '내용이 없습니다.',
+  }) {
     const navigate = useNavigate()
 
     async function newsDetail() {
@@ -70,12 +76,6 @@ NewsCard.propTypes = {
     title: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
-};
-
-NewsCard.defaultProps = {
-    image: defaultImage,
-    content: '내용이 없습니다.',
-    date: '날짜 없음',
 };
 
 function CustomSearchBar() {
