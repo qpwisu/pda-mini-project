@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import { useNavigate } from 'react-router';
-// import Form from 'react-bootstrap/Form';
+import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
+import { FaSearch } from 'react-icons/fa';
 // import Nav from 'react-bootstrap/Nav';
 // import Navbar from 'react-bootstrap/Navbar';
 // import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -20,14 +21,49 @@ function NewsCard({ id, image, title, date, content }) {
     }
 
     return (
-        <Card onClick={newsDetail} style={{ width: '18rem', margin: '10px' }}>
-          <Card.Img variant="top" src={image} style={{height: '200px'}}/>
-          <Card.Body style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <Card.Title style={ {fontSize: "16px" }}>{title}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted" style={{fontSize: "12px", marginTop: "5px", color: "#bbb"}}>{date}</Card.Subtitle>
-            <Card.Text style={{ color: "#a9a9a9" }}>{content}...</Card.Text>
-            {/* <Button variant="outline-primary">Read more</Button> */}
-          </Card.Body>
+        <Card 
+            onClick={newsDetail} 
+            style={{ 
+                width: 'calc(23% - 20px)', 
+                margin: '10px', 
+                cursor: 'pointer', 
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
+                borderRadius: '10px' 
+            }}>
+            <Card.Img 
+                variant="top" 
+                src={image} 
+                style={{ 
+                    height: '150px', 
+                    objectFit: 'cover', 
+                    borderTopLeftRadius: '10px', 
+                    borderTopRightRadius: '10px' 
+                }}/>
+            <Card.Body style={{ padding: '10px' }}>
+                <Card.Title 
+                    style={{ 
+                        fontSize: '14px', 
+                        fontWeight: 'bold', 
+                        color: '#333', 
+                        marginBottom: '5px' 
+                    }}>
+                    {title}
+                </Card.Title>
+                <Card.Subtitle 
+                    className="mb-2 text-muted" 
+                    style={{ fontSize: '12px', color: '#aaa' }}>
+                    {date}
+                </Card.Subtitle>
+                <Card.Text 
+                    style={{ 
+                        fontSize: '12px', 
+                        color: '#555', 
+                        lineHeight: '1.5', 
+                        marginTop: '5px' 
+                    }}>
+                    {content}...
+                </Card.Text>
+            </Card.Body>
         </Card>
     );
 }
@@ -39,11 +75,58 @@ NewsCard.propTypes = {
     date: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
 };
+
 NewsCard.defaultProps = {
     image: 'https://via.placeholder.com/150',
     content: '내용이 없습니다.',
     date: '날짜 없음',
-  };
+};
+
+function CustomSearchBar() {
+    const [query, setQuery] = useState("")
+    const navigate = useNavigate()
+
+    const searchButton = () => {
+        if (query.trim()) {
+          navigate(`/search`, { state: { query } });
+          setQuery('');
+          console.log(query)
+        } else {
+          alert('검색어를 입력하세요.');
+        }
+    }
+
+    return (
+        <Form style={{ width: '100%', maxWidth: '700px', margin: 'auto' }}>
+            <InputGroup>
+                <FormControl
+                    placeholder="type here"
+                    aria-label="Search"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    type="search"
+                    style={{
+                        borderRadius: '30px', 
+                        padding: '10px 20px',
+                        fontWeight: 'bold',
+                        color: '#E34348'
+                    }}
+                />
+                <Button 
+                    variant="outline-secondary" 
+                    onClick={searchButton}
+                    style={{ 
+                        border: 'none', 
+                        backgroundColor: 'transparent',
+                        color: '#E34348',
+                        borderRadius: '30px'
+                    }}>
+                    <FaSearch />
+                </Button>
+            </InputGroup>
+        </Form>
+    );
+}
 
 export default function MainPage(){
     const [newsList, setNewsList] = useState([])
@@ -60,13 +143,15 @@ export default function MainPage(){
     }, [])
 
     return (
-        <div>
-            <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '60px' }}>
-                <h2>경제 뉴스</h2>
-                <p style={{ color: '#666' }}>세상에서 가장 쉬운 경제 뉴스</p>
+        <div style={{backgroundColor: '#FBFBFB'}}>
+            <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '60px' }}>
+                <h2><b>Economy&nbsp;</b></h2>
+                <h2 style={{ color: '#E34348' }}><b>News</b></h2>
             </Container>
-
-            <Container className="d-flex flex-wrap justify-content-start" style={{ display: 'flex', gap: '16px', padding: '0 12px'}}>
+            <Container style={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingBottom: '60px'}}>
+                <CustomSearchBar />
+            </Container>
+            <Container className="d-flex flex-wrap justify-content-start" style={{ display: 'flex', gap: '20px', padding: '0 12px'}}>
             {newsList.map((news) => (
                     <NewsCard
                     key={news.id}
@@ -76,7 +161,7 @@ export default function MainPage(){
                     content={news.preview}
                     date={news.published_at}
                     />
-                ))}
+            ))}
         
         </Container>
         </div>
