@@ -41,36 +41,25 @@ def fetch_terms(db):
 # flashtext를 사용하여 content 텍스트에 설명을 추가하는 함수
 def enrich_content(content, terms):
     keyword_processor = KeywordProcessor()
+    for term in terms:
+        keyword_processor.add_keyword(term)
 
-    # 각 term에 대해 키워드를 설정하고 설명을 i 태그로 감쌉니다.
-    for term, description in terms.items():
-        keyword_processor.add_keyword(term, f"{term}<i>{description}</i>")
+    # 중복 방지를 위해 등장한 키워드를 추적하는 집합
+    applied_keywords = set()
 
-    # content 텍스트에서 키워드 매칭 및 대체
-    return keyword_processor.replace_keywords(content)
+    # content에서 키워드를 추출하고 중복을 방지
+    for term in keyword_processor.extract_keywords(content):
+        if term not in applied_keywords:
+            description = terms[term]
+            # 첫 번째로 등장한 위치만 <i> 태그로 감싸기
+            match = re.search(rf'\b({re.escape(term)})\b', content)
+            if match:
+                start, end = match.span()
+                # 첫 번째 등장 위치에만 툴팁 적용
+                content = f"{content[:start]}<span class='cursor-help' data-tooltip='{description}'>{term}</span>{content[end:]}"
+                applied_keywords.add(term)  # 첫 등장 처리 후 set에 추가
 
-# def enrich_content(content, terms):
-#     keyword_processor = KeywordProcessor()
-#
-#     # 키워드를 추가 (이때 설명은 필요하지 않으므로 생략)
-#     for term in terms:
-#         keyword_processor.add_keyword(term)
-#
-#     # content에서 키워드 추출 (중복 방지를 위해 set 사용)
-#     extracted_keywords = list(dict.fromkeys(keyword_processor.extract_keywords(content)))
-#
-#     # 각 키워드의 첫 번째 등장 위치만 변경
-#     for term in extracted_keywords:
-#         description = terms[term]
-#         # 첫 번째 등장 위치만 찾기
-#         matches = list(re.finditer(rf'\b({re.escape(term)})\b', content))
-#         if matches:
-#             # 첫 번째 일치 항목의 위치에만 <i> 태그를 추가
-#             first_match = matches[0]
-#             start, end = first_match.span()
-#             content = f"{content[:start]}{term}<i>{description}</i>{content[end:]}"
-#
-#     return content
+    return content
 
 # news.json 파일에서 데이터읽기
 def load_news():
