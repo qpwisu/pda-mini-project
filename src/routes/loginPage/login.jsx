@@ -48,12 +48,46 @@ export default function Login() {
       });
   };
 
+  const styles = {
+    container: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      backgroundColor: '#F8F9FA',
+    },
+    loginBox: {
+      backgroundColor: '#FFFFFF',
+      padding: '2rem',
+      borderRadius: '10px',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+      maxWidth: '400px',
+      width: '100%',
+    },
+    heading: {
+      fontSize: '1.8rem',
+      textAlign: 'center',
+      marginBottom: '20px',
+      fontWeight: 'bold',
+    },
+    button: {
+      width: '100%',
+      marginTop: '1rem',
+      backgroundColor: '#DC3545',
+      border: 'none',
+    },
+    linkText: {
+      color: '#007BFF',
+      cursor: 'pointer',
+      textDecoration: 'none',
+    },
+  };
   return (
-    <div className="min-vh-100 d-flex align-items-center justify-content-center bg-info">
-      <Card className="w-100" style={{ maxWidth: '400px' }}>
+    <div style={styles.container}>
+      <Card style={styles.loginBox}>
         <Card.Header className="text-center">
-          <h2 className="font-weight-bold">로그인</h2>
-          <p>EconoNews에 오신 것을 환영합니다</p>
+          <h2 style={styles.heading}>로그인</h2>
+          <p className="text-muted">EconoNews에 오신 것을 환영합니다</p>
         </Card.Header>
         <Card.Body>
           <Form onSubmit={handleSubmit}>
@@ -83,19 +117,15 @@ export default function Login() {
                 </Button>
               </InputGroup>
             </Form.Group>
-            <Button
-              variant="info"
-              type="submit"
-              className="w-100 text-white font-weight-bold"
-            >
+            <Button type="submit" style={styles.button} className="text-white">
               로그인
             </Button>
           </Form>
         </Card.Body>
         <Card.Footer className="text-center">
           <div className="text-muted mt-2">
-            계정이 없으신가요?
-            <a href="/signup" className="text-info">
+            계정이 없으신가요?{' '}
+            <a href="/signup" style={styles.linkText}>
               회원가입
             </a>
           </div>
