@@ -6,6 +6,7 @@ from domain.news import news_api as news_router
 from domain.term import term_api as term_router
 from domain.user import user_api as user_router
 from domain.user import my_page_api as my_page_router  # my_page_api를 추가로 import
+from domain.search import search_api as search_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -25,6 +26,8 @@ app.include_router(news_router.router, prefix="/news", tags=["news"])
 app.include_router(term_router.router, prefix="/terms", tags=["terms"])
 app.include_router(user_router.router, prefix="/users", tags=["users"])
 app.include_router(my_page_router.router, prefix="/mypage", tags=["mypage"])
+app.include_router(search_router.router, prefix="/search", tags=["search"])
+
 
 @app.get("/")
 async def root():
