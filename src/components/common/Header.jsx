@@ -27,17 +27,7 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
   const { isLoggedIn, user } = useSelector((state) => state.auth);
   console.log('isLoggedIn', isLoggedIn);
   console.log('user', user);
-
-  //검색 버튼
-  const searchButton = () => {
-    if (query.trim()) {
-      navigate(`/search`, { state: { query } });
-      setQuery('');
-      console.log(query);
-    } else {
-      alert('검색어를 입력하세요.');
-    }
-  };
+  
   // 로그아웃 버튼 클릭 시
   const handleLogout = () => {
     dispatch(logout()); // 로그아웃 액션 dispatch
@@ -54,41 +44,22 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary" style={{ padding: '0' }}>
-      <Container fluid style={{ background: '#FFF7F0', height: '60px' }}>
+      <Container fluid style={{ background: '#F5F5F5', height: '60px' }}>
         <Navbar.Brand
           href="#"
-          style={{ color: '#F8C39A', fontWeight: 'bold', fontSize: '25px' }}
+          style={{fontWeight: 'bold'}}
           onClick={mainButton}
         >
-          Economic
+          <h2 style={{marginLeft: "20px"}}>
+            <span style={{ fontSize: '20px' }}><b>Economy&nbsp;</b></span>
+            <span style={{ color: '#E34348', fontSize: '20px'  }}><b>News</b></span>
+          </h2>
+          {/* <h2 style={{ color: '#E34348' }}><b>News</b></h2> */}
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            {/* <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#all">All</Nav.Link> */}
           </Nav>
-          <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            <Button
-              variant="outline-success"
-              onClick={searchButton}
-              style={{
-                backgroundColor: '#F8C39A',
-                borderColor: '#F8C39A',
-                color: 'white',
-              }}
-            >
-              Search
-            </Button>
-          </Form>
           <Nav
             title={isLoggedIn ? '' : 'Login'} // 로그인했으면 이메일, 아니면 'Login' 버튼
             id="navbarScrollingDropdown"
@@ -109,9 +80,9 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
                   <NavDropdown.Item href="#policy">
                     Economic Policy
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#company">Companies</NavDropdown.Item>
+                  {/* <NavDropdown.Item href="#company">Companies</NavDropdown.Item>
                   <NavDropdown.Item href="#finance">Finance</NavDropdown.Item>
-                  <NavDropdown.Item href="#global">Global</NavDropdown.Item>
+                  <NavDropdown.Item href="#global">Global</NavDropdown.Item> */}
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={handleLogout}>
                     Logout

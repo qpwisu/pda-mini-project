@@ -1,18 +1,20 @@
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-//import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import { useNavigate } from 'react-router';
 import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FaSearch } from 'react-icons/fa';
-// import Nav from 'react-bootstrap/Nav';
-// import Navbar from 'react-bootstrap/Navbar';
-// import NavDropdown from 'react-bootstrap/NavDropdown';
+import defaultImage from '../../assets/image.svg';
 
-
-function NewsCard({ id, image, title, date, content }) {
+function NewsCard({
+    id,
+    image = defaultImage,
+    title = '제목 없음',
+    date = '날짜 없음',
+    content = '내용이 없습니다.',
+  }) {
     const navigate = useNavigate()
 
     async function newsDetail() {
@@ -74,12 +76,6 @@ NewsCard.propTypes = {
     title: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
-};
-
-NewsCard.defaultProps = {
-    image: 'https://via.placeholder.com/150',
-    content: '내용이 없습니다.',
-    date: '날짜 없음',
 };
 
 function CustomSearchBar() {
@@ -153,14 +149,14 @@ export default function MainPage(){
             </Container>
             <Container className="d-flex flex-wrap justify-content-start" style={{ display: 'flex', gap: '20px', padding: '0 12px'}}>
             {newsList.map((news) => (
-                    <NewsCard
+                <NewsCard
                     key={news.id}
                     id={news.id}
                     title={news.title}
                     image={news.imageURL}
                     content={news.preview}
                     date={news.published_at}
-                    />
+                />    
             ))}
         
         </Container>
