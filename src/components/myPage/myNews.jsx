@@ -1,77 +1,60 @@
-// MyNews.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './myNews.css';
-
-const initialNews = [
-  {
-    imgSrc: 'https://via.placeholder.com/150',
-    title: '경제 성장 둔화',
-    preview: '최근 보고서에 따르면, 세계 경제 성장 속도가 둔화되고 있는 것으로 나타났습니다.최근 보고서에 따르면, 세계 경제 성장 속도가 둔화되고 있는 것으로최근 보고서에 따르면, 세계 경제 성장 속도가 둔화되고 있는 것으로최근 보고서에 따르면, 세계 경제 성장 속도가 둔화되고 있는 것으로최근 보고서에 따르면, 세계 경제 성장 속도가 둔화되고 있는 것으로',
-  },
-  {
-    imgSrc: 'https://via.placeholder.com/150',
-    title: '인플레이션 상승',
-    preview: '각국의 인플레이션이 예상보다 높게 측정되어 생활비가 증가하고 있습니다.',
-  },
-  {
-    imgSrc: 'https://via.placeholder.com/150',
-    title: '주식 시장 변동성 증가',
-    preview: '주식 시장에서 변동성이 급격히 증가하고 있으며, 투자자들은 이에 대비하고 있습니다.',
-  },
-  {
-    imgSrc: 'https://via.placeholder.com/150',
-    title: '인플레이션 상승',
-    preview: '각국의 인플레이션이 예상보다 높게 측정되어 생활비가 증가하고 있습니다.',
-  },
-  {
-    imgSrc: 'https://via.placeholder.com/150',
-    title: '주식 시장 변동성 증가',
-    preview: '주식 시장에서 변동성이 급격히 증가하고 있으며, 투자자들은 이에 대비하고 있습니다.',
-  },
-  {
-    imgSrc: 'https://via.placeholder.com/150',
-    title: '인플레이션 상승',
-    preview: '각국의 인플레이션이 예상보다 높게 측정되어 생활비가 증가하고 있습니다.',
-  },
-  {
-    imgSrc: 'https://via.placeholder.com/150',
-    title: '주식 시장 변동성 증가',
-    preview: '주식 시장에서 변동성이 급격히 증가하고 있으며, 투자자들은 이에 대비하고 있습니다.',
-  },
-  {
-    imgSrc: 'https://via.placeholder.com/150',
-    title: '인플레이션 상승',
-    preview: '각국의 인플레이션이 예상보다 높게 측정되어 생활비가 증가하고 있습니다.',
-  },
-  {
-    imgSrc: 'https://via.placeholder.com/150',
-    title: '주식 시장 변동성 증가',
-    preview: '주식 시장에서 변동성이 급격히 증가하고 있으며, 투자자들은 이에 대비하고 있습니다.',
-  },
-];
+import axios from 'axios';
 
 export default function MyNews() {
-  const [news, setNews] = useState(initialNews);
+  const [news, setNews] = useState([]);
 
-  const handleDelete = (indexToDelete) => {
-    setNews(news.filter((_, index) => index !== indexToDelete));
+  useEffect(() => {
+    const fetchLikedNews = async () => {
+      try {
+        const response = await axios.get('/api/likes/news', {
+          withCredentials: true,
+        });
+        console.log("Rendering news item with id:", response.data);
+        setNews(response.data.liked_news || []); // 데이터가 없으면 빈 배열로 설정
+      } catch (error) { 
+        console.error("Failed to fetch liked news:", error);
+      }
+    };
+    fetchLikedNews();
+  }, []);
+
+  const handleDelete = async (newsId) => {
+    try {
+      await axios.delete(`/api/likes/news/${newsId}`);
+      setNews(news.filter(item => item.news_id !== newsId));
+    } catch (error) {
+      console.error("Failed to delete liked news:", error);
+    }
   };
 
   return (
     <div className="n-container">
-      <h2 className='sub-title'>좋아요 누른 뉴스</h2>
+      <h3 className="sub-title">
+      좋아요 누른 <span style={{ color: "#E34348" }}> 뉴스</span>
+      </h3>
       <div className="news-container">
-        {news.map((item, index) => (
-          <div className="news-card" key={index}>
-            <button className="delete-button" onClick={() => handleDelete(index)}>×</button>
-            <img src={item.imgSrc} alt={item.title} className="news-image" />
-            <h2>{item.title}</h2>
-            <hr className="separator" />
-            <div className="news-contents">
-              <p>{item.preview}</p>
+        {news.length === 0 ? (
+          <p className="no-news-message">좋아요 누른 뉴스가 없습니다.</p>
+        ) : (
+          news.map((item) => (
+            <div className="news-card" key={item.news_id}>
+              <button className="delete-button" onClick={() => handleDelete(item.news_id)}>×</button>
+              <img 
+                src={item.imageURL || 'https://via.placeholder.com/150'} 
+                alt={item.title} 
+                className="news-image"
+                onError={(e) => { e.target.src = 'https://via.placeholder.com/150'; }} // 이미지 로드 실패 시 기본 이미지로 대체
+              />
+              <h2>{item.title}</h2>
+              <hr className="separator" />
+              <div className="news-contents">
+                <p>{item.preview}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
