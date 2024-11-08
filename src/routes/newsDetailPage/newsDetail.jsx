@@ -1,6 +1,8 @@
 // src/routes/newsDetailPage/newsDetail.jsx
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import DOMPurify from 'dompurify';
+import parse, { domToReact } from 'html-react-parser';
 
 export default function NewsDetail() {
   const { idx } = useParams();
@@ -27,40 +29,59 @@ export default function NewsDetail() {
 
   const contentToProcess = articleData.new_content || "";
 
-  const processContent = (content) => {
-    const parts = content.split(/<i>|<\/i>/);
-    return parts.map((part, index) => {
-      if (index % 2 === 0) {
-        const words = part.split(/\s+/);
-        const lastWord = words.pop();
-        
-        return (
-          <span key={index}>
-            {words.join(' ')}{' '}
-            {lastWord && (
+  // DOMPurify 설정: 필요한 태그를 허용
+  const DOMPurifyOptions = {
+    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'br', 'span'],
+    ALLOWED_ATTR: ['href', 'title', 'class', 'data-tooltip'],
+  };
+
+  // 콘텐츠를 정화하여 안전하게 만듭니다.
+  const sanitizedContent = DOMPurify.sanitize(contentToProcess, DOMPurifyOptions);
+
+  // 콘텐츠를 파싱하고, 커스텀 replace 함수를 사용하여 툴팁 로직 적용
+  const parsedContent = parse(sanitizedContent, {
+    replace: (domNode) => {
+      if (domNode.name === 'i' && domNode.children && domNode.children.length > 0) {
+        // <i> 태그 내부의 툴팁 텍스트를 가져옵니다.
+        const tooltipText = domNode.children[0].data;
+
+        // 이전 노드가 텍스트 노드인지 확인합니다.
+        const previousSibling = domNode.prev;
+        if (previousSibling && previousSibling.type === 'text') {
+          const textContent = previousSibling.data.trim();
+          const words = textContent.split(' ');
+          const lastWord = words.pop();
+          const remainingText = words.join(' ');
+
+          // 이전 텍스트 노드를 업데이트
+          previousSibling.data = remainingText ? remainingText + ' ' : '';
+
+          // 마지막 단어를 툴팁이 적용된 요소로 반환하고 <i> 태그는 제외
+          return (
+            <>
+              {previousSibling.data}
               <span
                 className="cursor-help border-bottom border-dark"
                 onMouseEnter={(e) => {
-                  if (parts[index + 1]) {
-                    setTooltip({
-                      text: parts[index + 1],
-                      x: e.clientX,
-                      y: e.clientY,
-                      show: true,
-                    });
-                  }
+                  setTooltip({
+                    text: tooltipText,
+                    x: e.clientX,
+                    y: e.clientY,
+                    show: true,
+                  });
                 }}
                 onMouseLeave={() => setTooltip({ ...tooltip, show: false })}
               >
                 {lastWord}
               </span>
-            )}
-          </span>
-        );
+            </>
+          );
+        }
       }
-      return null;
-    });
-  };
+      // <i> 태그가 아닌 경우에는 그대로 렌더링
+      return domNode;
+    }
+  });
 
   return (
     <div className="container my-4 d-flex justify-content-center">
@@ -76,7 +97,7 @@ export default function NewsDetail() {
           {new Date(articleData.published_at).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' })}
         </div>
 
-        {/* 이미지 (전체 너비) */}
+        {/* 이미지 */}
         {articleData.imageURL && (
           <img
             src={articleData.imageURL}
@@ -87,9 +108,7 @@ export default function NewsDetail() {
 
         {/* 본문 내용 */}
         <div className="text-start" style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
-          {contentToProcess.includes("<i>")
-            ? processContent(contentToProcess)
-            : contentToProcess}
+          {parsedContent}
         </div>
 
         {/* 툴팁 */}
