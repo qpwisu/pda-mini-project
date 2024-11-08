@@ -41,7 +41,6 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
   // 로그아웃 버튼 클릭 시
   const handleLogout = () => {
     dispatch(logout()); // 로그아웃 액션 dispatch
-    sessionStorage.clear();
     navigate('/'); // 메인 페이지로 이동
   };
 
@@ -91,7 +90,7 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
             </Button>
           </Form>
           <Nav
-            title={isLoggedIn ? user?.email : 'Login'} // 로그인했으면 이메일, 아니면 'Login' 버튼
+            title={isLoggedIn ? '' : 'Login'} // 로그인했으면 이메일, 아니면 'Login' 버튼
             id="navbarScrollingDropdown"
             align="end"
             style={{ marginLeft: '30px', marginRight: '20px' }}
@@ -99,11 +98,14 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
             {isLoggedIn ? (
               <>
                 <NavDropdown
-                  title={isLoggedIn ? 'Mypage' : user?.email}
+                  title={isLoggedIn ? `${user?.username}님` : user?.email}
                   id="navbarScrollingDropdown"
                   align="end"
                   // style={{ marginLeft: '30px', marginRight: '20px' }}
                 >
+                  <NavDropdown.Item onClick={myPageBtn}>
+                    Mypage
+                  </NavDropdown.Item>
                   <NavDropdown.Item href="#policy">
                     Economic Policy
                   </NavDropdown.Item>
