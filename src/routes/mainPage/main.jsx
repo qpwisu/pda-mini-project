@@ -53,7 +53,7 @@ function NewsCard({
                 </Card.Title>
                 <Card.Subtitle 
                     className="mb-2 text-muted" 
-                    style={{ fontSize: '12px', color: '#aaa' }}>
+                    style={{ fontSize: '12px', color: '#aaa', marginTop: "10px" }}>
                     {date}
                 </Card.Subtitle>
                 <Card.Text 
@@ -124,6 +124,15 @@ function CustomSearchBar() {
     );
 }
 
+function formatDate(isDate) {
+    const date = new Date(isDate)
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+
+    return `${year}년 ${month}월 ${day}일`
+}
+
 export default function MainPage(){
     const [newsList, setNewsList] = useState([])
 
@@ -155,7 +164,7 @@ export default function MainPage(){
                     title={news.title}
                     image={news.imageURL}
                     content={news.preview}
-                    date={news.published_at}
+                    date={formatDate(news.published_at)}
                 />    
             ))}
         
