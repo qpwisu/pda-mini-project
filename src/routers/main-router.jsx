@@ -15,9 +15,10 @@ import MainPage from '~/routes/mainPage/main';
 import Layout from '~/components/common/Layout';
 
 import MyPage from '~/routes/myPage/myPage';
-import SignUp from '~/routes/signupPage/signup';
+import SignUp from '~/routes/signupPage/Signup';
 import NewsDetail from '~/routes/newsDetailPage/NewsDetail';
 import Search from '~/routes/searchPage/search';
+import Login from '~/routes/loginPage/login';
 
 export const mainRoutes = [
   {
@@ -29,6 +30,7 @@ export const mainRoutes = [
       { element: <NewsDetail />, path: 'detail/:idx' },
       { element: <Search />, path: 'search' },
       { element: <SignUp />, path: 'signup' },
+      { element: <Login />, path: 'login' },
     ],
   },
 ];
