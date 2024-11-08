@@ -65,122 +65,156 @@ export default function Signup() {
       });
   };
 
+  const styles = {
+    container: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      backgroundColor: '#F8F9FA',
+    },
+    loginBox: {
+      backgroundColor: '#FFFFFF',
+      padding: '2rem',
+      borderRadius: '10px',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+      maxWidth: '400px',
+      width: '100%',
+    },
+    heading: {
+      fontSize: '1.8rem',
+      textAlign: 'center',
+      marginBottom: '20px',
+      fontWeight: 'bold',
+    },
+    button: {
+      width: '100%',
+      marginTop: '1rem',
+      backgroundColor: '#DC3545',
+      border: 'none',
+    },
+    linkText: {
+      color: '#007BFF',
+      cursor: 'pointer',
+      textDecoration: 'none',
+    },
+  };
+
   return (
-    <div className="min-vh-100 bg-info d-flex justify-content-center align-items-center px-4">
-      <Card className="w-100" style={{ maxWidth: '400px' }}>
-        <Card.Header className="text-center">
-          <h2 className="font-weight-bold">회원가입</h2>
-          <p>EconoNews의 회원이 되어 다양한 경제 뉴스를 만나보세요</p>
-        </Card.Header>
-        <Card.Body>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="name" className="mb-3">
-              <Form.Label>이름</Form.Label>
+    <div style={styles.container}>
+      <div style={styles.loginBox}>
+        <h2 style={styles.heading}>회원가입</h2>
+        <p className="text-center">
+          EconoNews의 회원이 되어 다양한 경제 뉴스를 만나보세요
+        </p>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="name" className="mb-3">
+            <Form.Label>이름</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="홍길동"
+              required
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="email" className="mb-3">
+            <Form.Label>이메일</Form.Label>
+            <InputGroup>
               <Form.Control
-                type="text"
-                placeholder="홍길동"
+                type="email"
+                placeholder="name@example.com"
                 required
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setIsEmailChecked(false);
+                  setEmailCheckMessage('');
+                }}
               />
-            </Form.Group>
+              <Button variant="outline-secondary" onClick={handleEmailCheck}>
+                중복 확인
+              </Button>
+            </InputGroup>
+            {emailCheckMessage && (
+              <Alert
+                variant={isEmailChecked ? 'success' : 'danger'}
+                className="mt-2"
+              >
+                {emailCheckMessage}
+              </Alert>
+            )}
+          </Form.Group>
 
-            <Form.Group controlId="email" className="mb-3">
-              <Form.Label>이메일</Form.Label>
-              <InputGroup>
-                <Form.Control
-                  type="email"
-                  placeholder="name@example.com"
-                  required
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setIsEmailChecked(false); // 이메일 변경 시 중복 확인 상태 초기화
-                    setEmailCheckMessage(''); // 메시지 초기화
-                  }}
-                />
-                <Button variant="outline-secondary" onClick={handleEmailCheck}>
-                  중복 확인
-                </Button>
-              </InputGroup>
-              {emailCheckMessage && (
-                <Alert
-                  variant={isEmailChecked ? 'success' : 'danger'}
-                  className="mt-2"
-                >
-                  {emailCheckMessage}
-                </Alert>
-              )}
-            </Form.Group>
+          <Form.Group controlId="password" className="mb-3">
+            <Form.Label>비밀번호</Form.Label>
+            <InputGroup>
+              <Form.Control
+                type={showPassword ? 'text' : 'password'}
+                placeholder="••••••••"
+                required
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Button
+                variant="outline-secondary"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeSlash /> : <Eye />}
+              </Button>
+            </InputGroup>
+          </Form.Group>
 
-            <Form.Group controlId="password" className="mb-3">
-              <Form.Label>비밀번호</Form.Label>
-              <InputGroup>
-                <Form.Control
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••"
-                  required
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <Button
-                  variant="outline-secondary"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeSlash /> : <Eye />}
-                </Button>
-              </InputGroup>
-            </Form.Group>
-
-            <Form.Group controlId="confirmPassword" className="mb-3">
-              <Form.Label>비밀번호 확인</Form.Label>
-              <InputGroup>
-                <Form.Control
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder="••••••••"
-                  required
-                />
-                <Button
-                  variant="outline-secondary"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? <EyeSlash /> : <Eye />}
-                </Button>
-              </InputGroup>
-            </Form.Group>
-
-            <Form.Group controlId="terms" className="mb-3">
-              <Form.Check
-                type="checkbox"
-                label={
-                  <>
-                    <span>
-                      <Link to="/terms" className="text-info">
-                        이용약관
-                      </Link>
-                      에 동의합니다
-                    </span>
-                  </>
-                }
+          <Form.Group controlId="confirmPassword" className="mb-3">
+            <Form.Label>비밀번호 확인</Form.Label>
+            <InputGroup>
+              <Form.Control
+                type={showConfirmPassword ? 'text' : 'password'}
+                placeholder="••••••••"
                 required
               />
-            </Form.Group>
+              <Button
+                variant="outline-secondary"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <EyeSlash /> : <Eye />}
+              </Button>
+            </InputGroup>
+          </Form.Group>
 
-            <Button
-              variant="info"
-              type="submit"
-              className="w-100 text-white font-weight-bold"
-            >
-              회원가입
-            </Button>
-          </Form>
-        </Card.Body>
-        <Card.Footer className="text-center">
-          <div className="text-muted mt-2">
+          <Form.Group controlId="terms" className="mb-3">
+            <Form.Check
+              type="checkbox"
+              label={
+                <>
+                  <span>
+                    <Link to="/terms" style={styles.linkText}>
+                      이용약관
+                    </Link>
+                    에 동의합니다
+                  </span>
+                </>
+              }
+              required
+            />
+          </Form.Group>
+
+          <Button
+            style={styles.button}
+            type="submit"
+            className="text-white font-weight-bold"
+          >
+            회원가입
+          </Button>
+        </Form>
+
+        <div className="text-center mt-3">
+          <span className="text-muted">
             이미 계정이 있으신가요?{' '}
-            <Link to="/login" className="text-info">
+            <Link to="/login" style={styles.linkText}>
               로그인
             </Link>
-          </div>
-        </Card.Footer>
-      </Card>
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
