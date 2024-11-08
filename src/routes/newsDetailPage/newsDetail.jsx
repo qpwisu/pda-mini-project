@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import parse, { domToReact } from 'html-react-parser';
+import { Fragment } from 'react';
 
 export default function NewsDetail() {
   const { idx } = useParams();
@@ -44,9 +45,11 @@ export default function NewsDetail() {
       if (domNode.name === 'i' && domNode.children && domNode.children.length > 0) {
         // <i> 태그 내부의 툴팁 텍스트를 가져옵니다.
         const tooltipText = domNode.children[0].data;
+        
 
         // 이전 노드가 텍스트 노드인지 확인합니다.
         const previousSibling = domNode.prev;
+        console.log(previousSibling)
         if (previousSibling && previousSibling.type === 'text') {
           const textContent = previousSibling.data.trim();
           const words = textContent.split(' ');
@@ -55,7 +58,6 @@ export default function NewsDetail() {
 
           // 이전 텍스트 노드를 업데이트
           previousSibling.data = remainingText ? remainingText + ' ' : '';
-
           // 마지막 단어를 툴팁이 적용된 요소로 반환하고 <i> 태그는 제외
           return (
             <>
