@@ -85,7 +85,7 @@ export default function Login() {
   return (
     <div style={styles.container}>
       <Card style={styles.loginBox}>
-        <Card.Header className="text-center">
+        <Card.Header className="text-center" style={{ paddingTop: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <h2 style={styles.heading}>로그인</h2>
           <p className="text-muted">EconoNews에 오신 것을 환영합니다</p>
         </Card.Header>
