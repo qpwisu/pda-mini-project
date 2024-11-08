@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './myNews.css';
 import axios from 'axios';
 
 export default function MyNews() {
   const [news, setNews] = useState([]);
+  const navigate = useNavigate(); // useNavigate 훅을 사용하여 라우팅 관리
 
   useEffect(() => {
     const fetchLikedNews = async () => {
@@ -29,18 +31,35 @@ export default function MyNews() {
     }
   };
 
+  const handleCardClick = (newsId) => {
+    navigate(`/detail/${newsId}`); // news_id를 포함한 URL로 이동
+  };
+
   return (
     <div className="n-container">
       <h3 className="sub-title">
-      좋아요 누른 <span style={{ color: "#E34348" }}> 뉴스</span>
+        좋아요 누른 <span style={{ color: "#E34348" }}>뉴스</span>
       </h3>
       <div className="news-container">
         {news.length === 0 ? (
           <p className="no-news-message">좋아요 누른 뉴스가 없습니다.</p>
         ) : (
           news.map((item) => (
-            <div className="news-card" key={item.news_id}>
-              <button className="delete-button" onClick={() => handleDelete(item.news_id)}>×</button>
+            <div 
+              className="news-card" 
+              key={item.news_id}
+              onClick={() => handleCardClick(item.news_id)} // 카드 클릭 시 handleCardClick 호출
+              style={{ cursor: 'pointer' }} // 클릭 가능하도록 커서 스타일 추가
+            >
+              <button 
+                className="delete-button" 
+                onClick={(e) => { 
+                  e.stopPropagation(); // 이벤트 전파 중지하여 클릭이 카드 전체에 영향을 미치지 않게 함
+                  handleDelete(item.news_id); 
+                }}
+              >
+                ×
+              </button>
               <img 
                 src={item.imageURL || 'https://via.placeholder.com/150'} 
                 alt={item.title} 
