@@ -16,15 +16,20 @@ def get_detail(url):
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        date = soup.select_one('.media_end_head_info_datestamp_time._ARTICLE_DATE_TIME').get('data-date-time')
+        date_tag = soup.select_one('.media_end_head_info_datestamp_time._ARTICLE_DATE_TIME')
+        date = date_tag.get('data-date-time') if date_tag else None
 
-        # 본문을 개행 포함 상태로 가져오기
-        # 개행 문자를 <br> 태그로 유지
-        content = str(soup.select_one('.newsct_article')).replace('<br/>', '<br>').replace('</br>', '<br>')  # '<br>' 태그만 남겨둠
+        # 본문을 문자열로 변환
+        content = str(soup.select_one('.newsct_article'))
 
-        # 불필요한 태그를 제거하고 텍스트만 남겨둠
-        content = re.sub(r'<(/?[^>]+)>', lambda m: '<br>' if m.group(1) == 'br' else '', content)  # <br> 태그를 제외한 나머지 태그 제거
-        content = re.sub(r'[\n\r\t]+', '', content)
+        # 다양한 형태의 <br> 태그를 표준화된 '<br />'로 변환
+        content = content.replace('<br>', '<br />').replace('<br/>', '<br />').replace('</br>', '<br />')
+
+        # 모든 태그를 제거하되, <br /> 태그는 유지
+        content = re.sub(r'<\s*/?\s*([^ >]+)[^>]*>', lambda m: '<br />' if m.group(1).lower() == 'br' else '', content)
+
+        # 불필요한 공백 제거
+        content = re.sub(r'[\n\r\t]+', '', content).strip()
 
         time.sleep(2)
         return {"date": date, "content": content}
@@ -38,7 +43,7 @@ def main():
     all_news = []
     page = 1
 
-    while len(all_news) < 5:
+    while len(all_news) < 30:
         response = requests.get(f'https://news.naver.com/breakingnews/section/101/259?page={page}')
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -46,10 +51,15 @@ def main():
         items = soup.select('ul.sa_list li')
 
         for i, item in enumerate(items):
-            title = item.select_one('strong.sa_text_strong').get_text(strip=True)
-            preview = item.select_one('.sa_text_lede').get_text(strip=True)
-            url = item.select_one('a').get('href')
-            img_url = item.select_one('img').get('data-src') if item.select_one('img') else None
+            title_tag = item.select_one('strong.sa_text_strong')
+            preview_tag = item.select_one('.sa_text_lede')
+            url_tag = item.select_one('a')
+            img_tag = item.select_one('img')
+
+            title = title_tag.get_text(strip=True) if title_tag else ''
+            preview = preview_tag.get_text(strip=True) if preview_tag else ''
+            url = url_tag.get('href') if url_tag else ''
+            img_url = img_tag.get('data-src') if img_tag else None
 
             details = get_detail(url)
 
