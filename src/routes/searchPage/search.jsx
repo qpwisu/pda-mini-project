@@ -55,18 +55,17 @@ export default function Search() {
   // const [filter, setFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [results, setResults] = useState([]);
-  const resultsPerPage = 4;
+  const resultsPerPage = 2;
   const location = useLocation();
 
   useEffect(() => {
     (async () => {
       const title = location.state.query;
-      const res = await fetch(fetchNewsBytitle(title, 1)).then((res) => {
-        console.log(res.results);
-        return res.results;
-      });
+      await fetchNewsBytitle(title, 1).then((r) => {
+        setResults([...r.results]);
 
-      setResults(res);
+        return r.results;
+      });
     })();
   }, []);
 
@@ -77,11 +76,12 @@ export default function Search() {
   }, [results]);
 
   return (
-    <div className="container search-results-container">
-      <div className="col-lg-8 mx-auto">
-        <h1 className="search-results-title display-5">검색 결과</h1>
+    <>
+      <div className="container search-results-container">
+        <div className="col-lg-8 mx-auto">
+          <h1 className="search-results-title display-5">검색 결과</h1>
 
-        {/* <div className="d-flex mb-5 gap-3">
+          {/* <div className="d-flex mb-5 gap-3">
           <InputGroup className="search-input-group">
             <Form.Control
               type="search"
@@ -106,49 +106,52 @@ export default function Search() {
           </Form.Select>
         </div> */}
 
-        <div className="mb-5">
-          {results.map((result) => (
-            <Card key={result.id} className="result-card">
-              <Card.Body className="result-card-body">
-                <Card.Title className="result-card-title">
-                  {result.title}
-                </Card.Title>
-                <Card.Text className="result-card-summary">
-                  {result.preview}
-                </Card.Text>
-                <div className="result-card-footer">
-                  <span>{result.published_at}</span>
-                  <span className="news-category">경제</span>
-                </div>
-              </Card.Body>
-            </Card>
-          ))}
-        </div>
+          <div className="mb-5">
+            {results.map((result) => (
+              <Card key={result.id} className="result-card">
+                <Card.Body className="result-card-body">
+                  <Card.Title className="result-card-title">
+                    {result.title}
+                  </Card.Title>
+                  <Card.Text className="result-card-summary">
+                    {result.preview.length > 0
+                      ? result.preview
+                      : result.content}
+                  </Card.Text>
+                  <div className="result-card-footer">
+                    <span>{result.published_at}</span>
+                    <span className="news-category">경제</span>
+                  </div>
+                </Card.Body>
+              </Card>
+            ))}
+          </div>
 
-        <div className="d-flex justify-content-between align-items-center">
-          <Button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            variant="outline"
-            className="pagination-button"
-          >
-            <ChevronLeft className="me-2" /> 이전
-          </Button>
-          <span className="pagination-info">
-            페이지 {currentPage} / {totalPages}
-          </span>
-          <Button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            disabled={currentPage === totalPages}
-            variant="outline"
-            className="pagination-button"
-          >
-            다음 <ChevronRight className="ms-2" />
-          </Button>
+          <div className="d-flex justify-content-between align-items-center">
+            <Button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              variant="outline"
+              className="pagination-button"
+            >
+              <ChevronLeft className="me-2" /> 이전
+            </Button>
+            <span className="pagination-info">
+              페이지 {currentPage} / {totalPages}
+            </span>
+            <Button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+              variant="outline"
+              className="pagination-button"
+            >
+              다음 <ChevronRight className="ms-2" />
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
