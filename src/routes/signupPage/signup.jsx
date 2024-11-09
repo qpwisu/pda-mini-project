@@ -1,16 +1,27 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Form, Button, Card, InputGroup, Alert } from 'react-bootstrap';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
-
+import { OffSignupModal, OnLoginModal } from '~/store/modalSlice';
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [checkPassword, setCheckPassword] = useState('');
   const [isEmailChecked, setIsEmailChecked] = useState(false);
+  const [isPasswordChecked, setisPasswordChecked] = useState(false);
   const [emailCheckMessage, setEmailCheckMessage] = useState('');
+  const [isPasswordsame, setisPasswordsame] = useState(true);
+  const [passwordCheckMessage, setpasswordCheckMessage] = useState('');
+  const emailPattern =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+  const passwordPattern =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{8,}$/;
+
+  const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -19,7 +30,18 @@ export default function Signup() {
       return;
     }
 
-    event.preventDefault();
+    if (password !== checkPassword) {
+      setpasswordCheckMessage('비밀번호가 다릅니다.');
+      setisPasswordsame(false);
+      return;
+    }
+
+    if (!passwordPattern.test(password)) {
+      setpasswordCheckMessage('유효하지 않은 비밀번호 형식입니다.');
+      setisPasswordChecked(false);
+      return;
+    }
+
     fetch('/api/users/api/v1/signup', {
       method: 'POST',
       body: JSON.stringify({
@@ -33,29 +55,42 @@ export default function Signup() {
         return resp.json();
       })
       .then((data) => {
-        console.log(data);
+        if (data.status === 'success') {
+          dispatch(OffSignupModal()); // 모달 창 닫기
+          window.alert('회원가입 완료 환영합니다 !');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
       });
   };
 
   const handleEmailCheck = () => {
     // 이메일이 비어 있는지 확인
     if (!email.trim()) {
-      setEmailCheckMessage('이메일을 입력하세요.');
+      setEmailCheckMessage('이메일을 입력하세요!');
       setIsEmailChecked(false);
       return;
     }
-
+    // email 유효성 검사.
+    if (!emailPattern.test(email)) {
+      setEmailCheckMessage('유효하지 않은 이메일 형식입니다.');
+      setIsEmailChecked(false);
+      return;
+    }
+    // email verify api 요청.
     fetch(`/api/users/api/v1/verify-email/${email}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
-        if (data.detail.message === 'Email already exists') {
+        console.log(data.data);
+
+        if (data.detail?.message === 'Email already exists') {
           setEmailCheckMessage('이미 사용 중인 이메일입니다.');
           setIsEmailChecked(false);
-        } else {
+        } else if (data.status === 'success') {
           setEmailCheckMessage('사용 가능한 이메일입니다.');
           setIsEmailChecked(true);
         }
@@ -64,6 +99,8 @@ export default function Signup() {
         setEmailCheckMessage('잘못된 입력입니다.');
       });
   };
+
+  // password 유효성 검사.
 
   const styles = {
     container: {
@@ -101,119 +138,145 @@ export default function Signup() {
   };
 
   return (
-    <div style={styles.container}>
-      <Card style={styles.loginBox}>
-        <Card.Header className="text-center" style={{ paddingTop: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <h2 style={styles.heading}>회원가입</h2>
-          <p className="text-muted">EconoNews의 회원이 되어 다양한<br /> 경제 뉴스를 만나보세요</p>
-        </Card.Header>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="name" className="mb-3">
-            <Form.Label style={{marginTop: "10px"}}>이름</Form.Label>
+    <Card style={styles.loginBox}>
+      <Card.Header
+        className="text-center"
+        style={{
+          paddingTop: '30px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <h2 style={styles.heading}>회원가입</h2>
+        <p className="text-muted">
+          EconoNews의 회원이 되어 다양한
+          <br /> 경제 뉴스를 만나보세요
+        </p>
+      </Card.Header>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="name" className="mb-3">
+          <Form.Label style={{ marginTop: '10px' }}>이름</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="홍길동"
+            required
+            onChange={(e) => setName(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="email" className="mb-3">
+          <Form.Label>이메일</Form.Label>
+          <InputGroup>
             <Form.Control
-              type="text"
-              placeholder="홍길동"
+              type="email"
+              placeholder="name@example.com"
               required
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setIsEmailChecked(false);
+                setEmailCheckMessage('');
+              }}
             />
-          </Form.Group>
+            <Button variant="outline-secondary" onClick={handleEmailCheck}>
+              중복 확인
+            </Button>
+          </InputGroup>
+          {emailCheckMessage && (
+            <Alert
+              variant={isEmailChecked ? 'success' : 'danger'}
+              className="mt-2"
+            >
+              {emailCheckMessage}
+            </Alert>
+          )}
+        </Form.Group>
 
-          <Form.Group controlId="email" className="mb-3">
-            <Form.Label>이메일</Form.Label>
-            <InputGroup>
-              <Form.Control
-                type="email"
-                placeholder="name@example.com"
-                required
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setIsEmailChecked(false);
-                  setEmailCheckMessage('');
-                }}
-              />
-              <Button variant="outline-secondary" onClick={handleEmailCheck}>
-                중복 확인
-              </Button>
-            </InputGroup>
-            {emailCheckMessage && (
-              <Alert
-                variant={isEmailChecked ? 'success' : 'danger'}
-                className="mt-2"
-              >
-                {emailCheckMessage}
-              </Alert>
-            )}
-          </Form.Group>
+        <Form.Group controlId="password" className="mb-3">
+          <Form.Label>비밀번호 ( 영문, 숫자, 특수문자 포함 8자이상)</Form.Label>
+          <InputGroup>
+            <Form.Control
+              type={showPassword ? 'text' : 'password'}
+              placeholder="••••••••"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button
+              variant="outline-secondary"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeSlash /> : <Eye />}
+            </Button>
+          </InputGroup>
+        </Form.Group>
 
-          <Form.Group controlId="password" className="mb-3">
-            <Form.Label>비밀번호</Form.Label>
-            <InputGroup>
-              <Form.Control
-                type={showPassword ? 'text' : 'password'}
-                placeholder="••••••••"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <Button
-                variant="outline-secondary"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <EyeSlash /> : <Eye />}
-              </Button>
-            </InputGroup>
-          </Form.Group>
+        <Form.Group controlId="confirmPassword" className="mb-3">
+          <Form.Label>비밀번호 확인</Form.Label>
 
-          <Form.Group controlId="confirmPassword" className="mb-3">
-            <Form.Label>비밀번호 확인</Form.Label>
-            <InputGroup>
-              <Form.Control
-                type={showConfirmPassword ? 'text' : 'password'}
-                placeholder="••••••••"
-                required
-              />
-              <Button
-                variant="outline-secondary"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
-                {showConfirmPassword ? <EyeSlash /> : <Eye />}
-              </Button>
-            </InputGroup>
-          </Form.Group>
-
-          <Form.Group controlId="terms" className="mb-3">
-            <Form.Check
-              type="checkbox"
-              label={
-                <>
-                  <span>
-                    <Link to="/terms" style={styles.linkText}>
-                      이용약관
-                    </Link>
-                    에 동의합니다
-                  </span>
-                </>
+          <InputGroup>
+            <Form.Control
+              type={showConfirmPassword ? 'text' : 'password'}
+              placeholder="••••••••"
+              required
+              onChange={(e) => {
+                setCheckPassword(e.target.value);
+              }}
+            />
+            <Button
+              variant="outline-secondary"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <EyeSlash /> : <Eye />}
+            </Button>
+          </InputGroup>
+          {passwordCheckMessage && (
+            <Alert
+              className="mt-2"
+              variant={
+                isPasswordsame && isPasswordChecked ? 'success' : 'danger'
               }
-              required
-            />
-          </Form.Group>
+            >
+              {passwordCheckMessage}
+            </Alert>
+          )}
+        </Form.Group>
 
-          <Button
-            style={styles.button}
-            type="submit"
-            className="text-white font-weight-bold"
+        <Form.Group controlId="terms" className="mb-3">
+          <Form.Check
+            type="checkbox"
+            label={
+              <>
+                <span style={styles.linkText}>이용약관</span>
+                <span>에 동의합니다</span>
+              </>
+            }
+            required
+          />
+        </Form.Group>
+
+        <Button
+          style={styles.button}
+          type="submit"
+          className="text-white font-weight-bold"
+        >
+          회원가입
+        </Button>
+      </Form>
+      <Card.Footer className="text-center">
+        <div className="text-muted mt-2">
+          이미 계정이 있으신가요?{' '}
+          <a
+            onClick={() => {
+              dispatch(OffSignupModal());
+              dispatch(OnLoginModal());
+            }}
+            style={styles.linkText}
           >
-            회원가입
-          </Button>
-        </Form>
-         <Card.Footer className="text-center">
-          <div className="text-muted mt-2">
-            이미 계정이 있으신가요?{' '}
-            <a href="/login" style={styles.linkText}>
-              로그인
-            </a>
-          </div>
-        </Card.Footer>
-      </Card>
-    </div>
+            로그인
+          </a>
+        </div>
+      </Card.Footer>
+    </Card>
   );
 }
