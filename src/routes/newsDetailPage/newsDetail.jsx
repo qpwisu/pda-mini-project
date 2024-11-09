@@ -4,23 +4,45 @@ import { useParams } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import parse, { domToReact } from 'html-react-parser';
 import { Fragment } from 'react';
+import clickBtn from '../../assets/clickBtn.svg';
+import clickBtn2 from '../../assets/clickBtn2.svg';
 
 
 
 export default function NewsDetail() {
   const { idx } = useParams();
   const [articleData, setArticleData] = useState(null);
-  const [tooltip, setTooltip] = useState({ text: '', x: 0, y: 0, show: false }); 
+  const [tooltip, setTooltip] = useState({ text: '', x: 0, y: 0, show: false });
+  const [btn, setBtn] = useState(false)
 
   const apiUrl = process.env.REACT_APP_API_URL || ''; //  .env.production 때문에 사용하는데 잘 안됨
 
   const apiUrl = process.env.REACT_APP_API_URL || '';
 
+  const isClikedBtn = async () => {
+    //setBtn((prev) => !prev);
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/likes/news/${idx}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ news_id: idx }),
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to like the article');
+      }
+      setBtn((prev) => !prev);
+    } catch (error) {
+      console.error('Error sending like request:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
-
-        const response = await fetch(`http://3.36.99.137:8000/news/detail/${idx}`);
+      try{
+        const response = await fetch(`http://127.0.0.1:8000/news/detail/${idx}`);
         // const response = await fetch(`${apiUrl}/news/detail/${idx}`); .env.production 사용시 사용
         const data = await response.json();
         setArticleData(data);
@@ -102,10 +124,24 @@ export default function NewsDetail() {
           {articleData.title}
         </h3>
 
-        {/* 날짜 */}
-        <div className="text-muted">
-          {new Date(articleData.published_at).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' })}
-        </div>
+        <div className="d-flex justify-content-between align-items-center w-100 px-3">
+            {/* 날짜 */}
+            <div className="text-muted w-100 text-left">
+              {new Date(articleData.published_at).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' })}
+            </div>
+            <button
+            className="btn p-0"
+            onClick={isClikedBtn}
+            style={{ background: "none", border: "none" }}>
+              <img
+              src={btn ? clickBtn : clickBtn2}
+              alt="스크랩 버튼"
+              width="20"
+              height="20"
+              />
+            </button>
+            <hr />
+          </div>
 
         {/* 이미지 */}
         {articleData.imageURL && (
