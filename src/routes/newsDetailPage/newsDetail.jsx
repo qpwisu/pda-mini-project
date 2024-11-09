@@ -10,15 +10,15 @@ import { Fragment } from 'react';
 export default function NewsDetail() {
   const { idx } = useParams();
   const [articleData, setArticleData] = useState(null);
-  const [tooltip, setTooltip] = useState({ text: '', x: 0, y: 0, show: false });
+  const [tooltip, setTooltip] = useState({ text: '', x: 0, y: 0, show: false }); 
 
-  const apiUrl = process.env.REACT_APP_API_URL || '';
-
+  const apiUrl = process.env.REACT_APP_API_URL || ''; //  .env.production 때문에 사용하는데 잘 안됨
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${apiUrl}/news/detail/${idx}`);
+        const response = await fetch(`http://3.36.99.137:8000/news/detail/${idx}`);
+        // const response = await fetch(`${apiUrl}/news/detail/${idx}`); .env.production 사용시 사용
         const data = await response.json();
         setArticleData(data);
       } catch (error) {
