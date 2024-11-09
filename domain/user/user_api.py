@@ -34,7 +34,7 @@ def check_email(email: str):
         if user:
             return error_response(message="Email already exists")
         else:
-            return success_response(data=None)
+            return success_response(data=email)
 
 
 # 회원가입
