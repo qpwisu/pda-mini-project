@@ -1,20 +1,78 @@
-/* searchbar.css */
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+}
+
 .search-bar-form {
   width: 100%;
   max-width: 700px;
   margin: auto;
+  position: relative;
 }
 
 .search-bar-input {
-  border-radius: 30px;
-  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  padding: 10px 40px 10px 20px; /* 오른쪽 아이콘 공간 확보 */
   font-weight: bold;
   color: #e34348;
+  outline: none;
+  font-size: 1rem;
+  box-shadow: none;
+  transition: border-color 0.3s ease;
+  width: 100%;
+}
+
+.search-bar-input:focus {
+  color: #e34348;
+  border-color: #e34348;
+  box-shadow: 0 0 5px rgba(227, 67, 72, 0.5);
 }
 
 .search-bar-button {
   border: none;
   background-color: transparent;
   color: #e34348;
-  border-radius: 30px;
+  position: absolute;
+  right: 30px; /* 입력 필드 오른쪽에 고정 */
+  top: 50%;
+  transform: translateY(-50%); /* 세로로 가운데 정렬 */
+  font-size: 1.2rem;
+  padding: 0;
+  cursor: pointer;
+}
+
+.suggestions-dropdown {
+  border-radius: 15px;
+  position: absolute;
+  width: 100%;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  background-color: white;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+}
+
+.suggestion-item {
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.input-group {
+  width: 100%;
+}
+
+.input-group .btn {
+  z-index: 5;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
 }
