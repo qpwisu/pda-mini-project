@@ -5,15 +5,20 @@ import DOMPurify from 'dompurify';
 import parse, { domToReact } from 'html-react-parser';
 import { Fragment } from 'react';
 
+
+
 export default function NewsDetail() {
   const { idx } = useParams();
   const [articleData, setArticleData] = useState(null);
   const [tooltip, setTooltip] = useState({ text: '', x: 0, y: 0, show: false });
 
+  const apiUrl = process.env.REACT_APP_API_URL || '';
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/news/detail/${idx}`);
+        const response = await fetch(`${apiUrl}/news/detail/${idx}`);
         const data = await response.json();
         setArticleData(data);
       } catch (error) {
