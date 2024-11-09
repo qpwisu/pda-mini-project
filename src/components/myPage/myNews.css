@@ -8,7 +8,8 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
   margin: 0 auto;
-  height: 545px;
+  
+  min-height: 545px;
 
 }
 

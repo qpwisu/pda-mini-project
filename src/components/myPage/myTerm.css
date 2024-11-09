@@ -9,7 +9,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   max-width: 100%;
   margin: 0 auto;
-  height: 350px;
+  min-height: 350px;
 
 }
 
@@ -95,3 +95,46 @@
 .term-card p {
   margin-bottom: 0; /* margin-bottom 제거 */
 }
+
+.search-container {
+
+  
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background-color: white;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 0; /* 기본 여백 제거 */
+  padding: 0;
+  list-style-type: none;
+}
+
+
+
+.flex-tt{
+  display: flex;
+  gap : 20px;
+  
+}
+.add-button {
+  padding: 2px px;
+  border: 2px solid #E34348; /* 빨간색 테두리 */
+  border-radius: 6px; /* 둥근 모서리 */
+  background-color: white; /* 흰색 배경 */
+  color: #E34348; /* 검정색 글자 */
+  font-weight: bold; /* 글자 굵게 */
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+

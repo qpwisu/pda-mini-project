@@ -14,9 +14,12 @@ export default function NewsDetail() {
 
   const apiUrl = process.env.REACT_APP_API_URL || ''; //  .env.production 때문에 사용하는데 잘 안됨
 
+  const apiUrl = process.env.REACT_APP_API_URL || '';
+
+
   useEffect(() => {
     const fetchData = async () => {
-      try {
+
         const response = await fetch(`http://3.36.99.137:8000/news/detail/${idx}`);
         // const response = await fetch(`${apiUrl}/news/detail/${idx}`); .env.production 사용시 사용
         const data = await response.json();
