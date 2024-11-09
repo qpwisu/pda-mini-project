@@ -4,9 +4,10 @@ import './myNews.css';
 import axios from 'axios';
 
 export default function MyNews() {
-  const [news, setNews] = useState([]);
+  const [news, setNews] = useState([]); // 좋아요 누른 뉴스 목록
   const navigate = useNavigate(); // useNavigate 훅을 사용하여 라우팅 관리
 
+  // 좋아요 누른 뉴스 목록 가져오기
   useEffect(() => {
     const fetchLikedNews = async () => {
       try {
@@ -22,15 +23,19 @@ export default function MyNews() {
     fetchLikedNews();
   }, []);
 
+  // 뉴스 좋아요 취소 함수
   const handleDelete = async (newsId) => {
     try {
-      await axios.delete(`/api/likes/news/${newsId}`);
+      await axios.delete(`/api/likes/news/${newsId}`, { // 새로운 엔드포인트 사용
+        withCredentials: true,
+      });
       setNews(news.filter(item => item.news_id !== newsId));
     } catch (error) {
       console.error("Failed to delete liked news:", error);
     }
   };
 
+  // 뉴스 카드 클릭 시 상세 페이지로 이동
   const handleCardClick = (newsId) => {
     navigate(`/detail/${newsId}`); // news_id를 포함한 URL로 이동
   };
