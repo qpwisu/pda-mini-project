@@ -1,5 +1,5 @@
 // myPage.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import MyTerm from '~/components/myPage/myTerm';
 import MyNews from '~/components/myPage/myNews';
 
@@ -18,23 +18,35 @@ export default function MyPage() {
   }, []);
 
   return (
-    <div style={{ padding: '30px 50px', backgroundColor: 'rgb(251, 251, 251)' }}>
-      <h1 style={{ 
-        marginBottom: '30px'}}>My Page</h1>
-      
-      <div style={{ 
-        marginBottom: '20px'
-        ,backgroundColor: '#ffffff',
+    <div
+      style={{ padding: '30px 50px', backgroundColor: 'rgb(251, 251, 251)' }}
+    >
+      <h1
+        style={{
+          marginBottom: '30px',
+        }}
+      >
+        My Page
+      </h1>
+
+      <div
+        style={{
+          marginBottom: '20px',
+          backgroundColor: '#ffffff',
           padding: '20px 40px',
-          borderRadius:'8px',
+          borderRadius: '8px',
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
           maxWidth: '100%',
-          height: '100%' }}>
-        <h3 className="sub-title">
-            프로필
-        </h3>
-        <p><strong style={{ color: "#E34348" }}>Username:</strong> {username}</p>
-        <p><strong style={{ color: "#E34348" }}>Email:</strong> {email}</p>
+          height: '100%',
+        }}
+      >
+        <h3 className="sub-title">프로필</h3>
+        <p>
+          <strong style={{ color: '#E34348' }}>Username:</strong> {username}
+        </p>
+        <p>
+          <strong style={{ color: '#E34348' }}>Email:</strong> {email}
+        </p>
       </div>
 
       {/* 좋아요 누른 용어 및 뉴스 섹션 */}

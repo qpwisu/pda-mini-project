@@ -1,12 +1,16 @@
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import { useNavigate } from 'react-router';
 import defaultImage from '../../assets/image.svg';
 import SearchBar from '~/components/search/searchbar';
-
+import Modal from 'react-bootstrap/Modal';
+import { OffLoginModal, OffSignupModal } from '~/store/modalSlice';
+import Login from '../loginPage/login';
+import Signup from '../signupPage/signup';
 function NewsCard({
   id,
   image = defaultImage,
@@ -93,6 +97,17 @@ function formatDate(isDate) {
 
 export default function MainPage() {
   const [newsList, setNewsList] = useState([]);
+  const { isLoginModal, isSignupModal } = useSelector((state) => state.modal);
+  const dispatch = useDispatch();
+
+  // login modal창 닫기
+  const CloseLoginModal = () => {
+    dispatch(OffLoginModal());
+  };
+  // signup modal창 닫기
+  const CloseSignupModal = () => {
+    dispatch(OffSignupModal());
+  };
 
   useEffect(() => {
     axios
@@ -151,6 +166,34 @@ export default function MainPage() {
           />
         ))}
       </Container>
+
+      {/* 로그인 모달 */}
+      <Modal show={isLoginModal} onHide={CloseLoginModal} centered>
+        <Modal.Header
+          style={{ borderBottom: 'none' }}
+          closeButton
+        ></Modal.Header>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Login />
+        </div>
+        <Modal.Footer
+          style={{ padding: '19px', borderTop: 'none' }}
+        ></Modal.Footer>
+      </Modal>
+
+      {/* 회원가입 모달 */}
+      <Modal show={isSignupModal} onHide={CloseSignupModal} centered>
+        <Modal.Header
+          style={{ borderBottom: 'none' }}
+          closeButton
+        ></Modal.Header>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Signup />
+        </div>
+        <Modal.Footer
+          style={{ padding: '19px', borderTop: 'none' }}
+        ></Modal.Footer>
+      </Modal>
     </div>
   );
 }
