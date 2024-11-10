@@ -1,0 +1,49 @@
+name: Deploy React App to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'  # 프로젝트에 맞는 Node.js 버전으로 설정
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set environment variables
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+        run: echo "Environment variables set"
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_KEY: ${{ secrets.EC2_KEY }}
+        run: |
+          # 키 파일 생성 및 권한 설정
+          echo "${EC2_KEY}" > key.pem
+          chmod 600 key.pem
+
+          # EC2 서버의 /var/www/html 경로에 빌드 파일 전송
+          scp -o StrictHostKeyChecking=no -i key.pem -r build/* ${EC2_USER}@${EC2_HOST}:/var/www/html
+
+          # 서버에서 Nginx 재시작 (EC2 서버에서 sudo 권한을 요구하는 경우)
+          ssh -o StrictHostKeyChecking=no -i key.pem ${EC2_USER}@${EC2_HOST} "sudo systemctl restart nginx"
+
+          # 배포 후 키 파일 제거
+          rm key.pem
