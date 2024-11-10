@@ -12,7 +12,7 @@ export default function MyNews() {
   useEffect(() => {
     const fetchLikedNews = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/likes/news`, {
+        const response = await axios.get(`${API_BASE_URL}/api/likes/news`, {
           withCredentials: true,
         });
         console.log("Rendering news item with id:", response.data);
@@ -27,7 +27,7 @@ export default function MyNews() {
   // 뉴스 좋아요 취소 함수
   const handleDelete = async (newsId) => {
     try {
-      await axios.delete(`${API_BASE_URL}/likes/news/${newsId}`, { // 새로운 엔드포인트 사용
+      await axios.delete(`${API_BASE_URL}/api/likes/news/${newsId}`, { // 새로운 엔드포인트 사용
         withCredentials: true,
       });
       setNews(news.filter(item => item.news_id !== newsId));

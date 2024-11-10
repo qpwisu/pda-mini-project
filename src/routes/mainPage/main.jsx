@@ -114,7 +114,7 @@ export default function MainPage() {
 
   useEffect(() => {
     axios
-      .get(`${API_BASE_URL}/news/main`) // 백틱(`)으로 템플릿 리터럴 사용
+      .get(`${API_BASE_URL}/api/news/main`) // 백틱(`)으로 템플릿 리터럴 사용
       .then((response) => {
         setNewsList(response.data);
         console.log(response.data);

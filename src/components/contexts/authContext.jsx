@@ -34,7 +34,7 @@ export default function AuthProvider({ children }) {
 
   const checkLogin = useCallback(async () => {
     // 2번째 방법
-    const res = await fetch(`${API_BASE_URL}/users/me`);
+    const res = await fetch(`${API_BASE_URL}/api/users/me`);
     if (res.ok) {
       const user = res.json();
       setUser(user);

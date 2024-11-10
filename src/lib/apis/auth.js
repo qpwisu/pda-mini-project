@@ -2,7 +2,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function serverLogin({ email, password }) {
   try {
-    const res = await fetch(`${API_BASE_URL}/users/login`, {
+    const res = await fetch(`${API_BASE_URL}/api/users/login`, {
       method: 'POST',
       body: JSON.stringify({
         email,
