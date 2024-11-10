@@ -2,7 +2,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default async function fetchPopularTerms() {
   try {
-    const res = await fetch(`${API_BASE_URL}/terms/top-liked-terms`, {
+    const res = await fetch(`${API_BASE_URL}/api/terms/top-liked-terms`, {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
