@@ -1,67 +1,75 @@
+// searchbar.jsx
+
 import { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FaSearch } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
 import { debounce } from 'lodash';
+import { useNavigate } from 'react-router-dom';
 import './searchbar.css';
 import { fetchAutocompleteSuggestions } from '~/lib/apis/search';
 
-export default function SearchBar() {
+export default function SearchBar({
+  onSecondarySearch,
+  onSearch,
+  isSecondarySearch,
+}) {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!query) {
+    setShowSuggestions(false);
+    setSuggestions([]);
+  }, []);
+
+  useEffect(() => {
+    if (!query.trim()) {
       setSuggestions([]);
       setShowSuggestions(false);
     }
   }, [query]);
 
-  const searchButton = useCallback(() => {
+  const handleSearchButton = useCallback(() => {
     if (query.trim()) {
-      navigate(`/search`, { state: { query } });
-      setQuery('');
-      setShowSuggestions(false);
-      setSuggestions([]);
-      console.log(query);
+      navigate('/search', { state: { query } }); // 검색어와 함께 /search 페이지로 이동
+      if (onSecondarySearch) onSecondarySearch(query); // 검색어 업데이트
+      if (onSearch) onSearch(); // 검색 실행
+      setShowSuggestions(false); // 자동완성 제안 감추기
     } else {
       alert('검색어를 입력하세요.');
     }
-  }, [query, navigate]);
+  }, [query, onSecondarySearch, onSearch, navigate]);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      searchButton();
+      handleSearchButton();
     }
   };
 
-  const fetchSuggestions = useCallback(
-    debounce(async (input) => {
-      if (input.trim()) {
-        const response = await fetchAutocompleteSuggestions(input);
-        const results = response?.terms || []; // terms가 undefined일 경우 빈 배열로 처리
-        setSuggestions(results.slice(0, 10));
-        setShowSuggestions(true);
-      } else {
-        setShowSuggestions(false);
-        setSuggestions([]);
-      }
-    }, 800),
-    []
-  );
+  const fetchSuggestionsDebounced = debounce(async (input) => {
+    if (input.trim()) {
+      const response = await fetchAutocompleteSuggestions(input);
+      const results = response?.terms || [];
+      setSuggestions(results.slice(0, 10));
+      setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
+      setSuggestions([]);
+    }
+  }, 800);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setQuery(value);
-    fetchSuggestions(value);
+    fetchSuggestionsDebounced(value);
   };
 
   const handleSuggestionClick = (suggestion) => {
     setQuery(suggestion);
-    searchButton();
+    handleSearchButton();
   };
 
   return (
@@ -69,7 +77,9 @@ export default function SearchBar() {
       <div className="search-bar-container container">
         <InputGroup>
           <FormControl
-            placeholder="검색어를 입력해주세요."
+            placeholder={
+              isSecondarySearch ? '결과 내 검색' : '검색어를 입력해주세요.'
+            }
             aria-label="Search"
             value={query}
             onChange={handleInputChange}
@@ -79,7 +89,7 @@ export default function SearchBar() {
           />
           <Button
             variant="outline-secondary"
-            onClick={() => searchButton()}
+            onClick={handleSearchButton}
             className="search-bar-button"
           >
             <FaSearch className="search-icon" />
@@ -103,3 +113,9 @@ export default function SearchBar() {
     </Form>
   );
 }
+
+SearchBar.propTypes = {
+  onSecondarySearch: PropTypes.func,
+  onSearch: PropTypes.func,
+  isSecondarySearch: PropTypes.bool, // 결과 내 검색 모드 여부를 위한 prop
+};
