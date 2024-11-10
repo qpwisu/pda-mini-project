@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { debounce } from 'lodash';
 import './searchbar.css';
-import { fetchAutocompleteSuggestions } from '~/lib/apis/search'; // Import your autocomplete API function
+import { fetchAutocompleteSuggestions } from '~/lib/apis/search';
 
 export default function SearchBar() {
   const [query, setQuery] = useState('');
@@ -12,36 +12,46 @@ export default function SearchBar() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const navigate = useNavigate();
 
-  const searchButton = () => {
+  useEffect(() => {
+    if (!query) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  }, [query]);
+
+  const searchButton = useCallback(() => {
     if (query.trim()) {
       navigate(`/search`, { state: { query } });
       setQuery('');
       setShowSuggestions(false);
+      setSuggestions([]);
       console.log(query);
     } else {
       alert('검색어를 입력하세요.');
     }
-  };
+  }, [query, navigate]);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       searchButton();
-      setSuggestions([]);
     }
   };
 
-  const fetchSuggestions = debounce(async (input) => {
-    if (input.trim()) {
-      const response = await fetchAutocompleteSuggestions(input);
-      const results = response?.terms || []; // terms가 undefined일 경우 빈 배열로 처리
-      setSuggestions(results.slice(0, 10)); // Limit suggestions to 10 items
-      setShowSuggestions(true);
-    } else {
-      setSuggestions([]);
-      setShowSuggestions(false);
-    }
-  }, 800);
+  const fetchSuggestions = useCallback(
+    debounce(async (input) => {
+      if (input.trim()) {
+        const response = await fetchAutocompleteSuggestions(input);
+        const results = response?.terms || []; // terms가 undefined일 경우 빈 배열로 처리
+        setSuggestions(results.slice(0, 10));
+        setShowSuggestions(true);
+      } else {
+        setShowSuggestions(false);
+        setSuggestions([]);
+      }
+    }, 800),
+    []
+  );
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -51,7 +61,6 @@ export default function SearchBar() {
 
   const handleSuggestionClick = (suggestion) => {
     setQuery(suggestion);
-    setShowSuggestions(false);
     searchButton();
   };
 
