@@ -7,7 +7,7 @@ import { Fragment } from 'react';
 import clickBtn from '../../assets/clickBtn.svg';
 import clickBtn2 from '../../assets/clickBtn2.svg';
 
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function NewsDetail() {
   const { idx } = useParams();
@@ -20,7 +20,7 @@ export default function NewsDetail() {
   const isClikedBtn = async () => {
     //setBtn((prev) => !prev);
     try {
-      const response = await fetch(`http://127.0.0.1:8000/likes/news/${idx}`, {
+      const response = await fetch(`${API_BASE_URL}/api/likes/news/${idx}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ export default function NewsDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try{
-        const response = await fetch(`http://3.36.99.137/news/detail/${idx}`);
+        const response = await fetch(`${API_BASE_URL}/api/news/detail/${idx}`);
         // const response = await fetch(`${apiUrl}/news/detail/${idx}`); .env.production 사용시 사용
         const data = await response.json();
         setArticleData(data);
