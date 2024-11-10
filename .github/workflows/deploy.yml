@@ -33,14 +33,14 @@ jobs:
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
-          EC2_KEY: ${{ secrets.EC2_KEY }}
+          EC2_KEY: ${{ secrets.EC2_KEY }}  # EC2_KEY 사용
         run: |
-          # 키 파일 생성 및 권한 설정
+          # SSH 키 파일 생성 및 권한 설정
           echo "${EC2_KEY}" > key.pem
           chmod 600 key.pem
 
-          # EC2 서버의 /var/www/html 경로에 빌드된 dist 폴더 파일 전송
-          scp -o StrictHostKeyChecking=no -i key.pem -r dist/* ${EC2_USER}@${EC2_HOST}:/var/www/html
+          # EC2 서버의 /home/ubuntu/pda_data/pda-news-frontend 경로에 빌드 파일(dist 폴더 전체) 전송
+          scp -o StrictHostKeyChecking=no -i key.pem -r dist/* ${EC2_USER}@${EC2_HOST}:/home/ubuntu/pda_data/pda-news-frontend/
 
           # 서버에서 Nginx 재시작 (EC2 서버에서 sudo 권한을 요구하는 경우)
           ssh -o StrictHostKeyChecking=no -i key.pem ${EC2_USER}@${EC2_HOST} "sudo systemctl restart nginx"
