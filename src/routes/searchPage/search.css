@@ -1,18 +1,45 @@
 /* search.css */
 
-.container.search-results-container {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 20px;
+.search-results-container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding-top: 20px;
 }
 
+.search-results-content {
+  flex-grow: 1;
+  max-width: 1200px;
+}
+
+.container-wrapper {
+  display: flex;
+  justify-content: center;
+  max-width: 1400px; /* 최대 너비 제한 */
+  width: 100%;
+  margin: auto;
+  padding-top: 20px;
+}
+
+.col-lg-8 {
+  flex-grow: 1;
+}
+
+.results-section {
+  min-height: 50vh;
+}
 .search-results-title {
   text-align: center;
   font-size: 2rem;
   font-weight: bold;
   color: #e34348;
   margin-bottom: 40px;
+}
+
+.search-results-content {
+  flex-grow: 1;
+  max-width: 700px; /* 검색 결과의 최대 너비 제한 */
 }
 
 .result-card {
@@ -58,6 +85,18 @@
   font-weight: bold;
 }
 
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  position: relative; /* 고정된 위치로 변경 */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background-color: white;
+  z-index: 15; /* 다른 요소 위에 표시되도록 설정 */
+}
+
 .pagination-button {
   color: #e34348;
   font-weight: bold;
@@ -70,12 +109,12 @@
 }
 
 .pagination-button:disabled {
-  font-weight: 700; 
+  font-weight: 700;
   display: flex;
   align-items: center;
   border-radius: 5px;
-  background-color: #d3d3d3; 
-  color: #6c757d; 
+  background-color: #d3d3d3;
+  color: #6c757d;
   border-color: #d3d3d3;
 }
 
@@ -91,6 +130,6 @@
 }
 
 .links {
-  text-decoration: 'none'; 
+  text-decoration: 'none';
   color: 'inherit';
 }

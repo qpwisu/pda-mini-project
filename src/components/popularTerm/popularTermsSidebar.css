@@ -1,0 +1,38 @@
+.popular-terms-sidebar {
+  position: sticky;
+  top: 150px; /* 페이지 상단에서 떨어진 거리 */
+  right: 20px; /* 우측 여백 */
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+}
+
+.sidebar-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #e34348;
+  margin-bottom: 15px;
+}
+
+.terms-list {
+  list-style-type: none;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+}
+
+.terms-list li {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.popular-terms-sidebar {
+  margin-left: 20px;
+  max-width: 200px;
+  position: sticky;
+  top: 150px;
+}
