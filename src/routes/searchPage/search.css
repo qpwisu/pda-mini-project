@@ -18,6 +18,7 @@
 .search-results-content {
   flex-grow: 1;
   width: 100%; /* 전체 컨테이너의 70% 너비로 설정 */
+  margin-left: 15rem;
 }
 
 .col-lg-8 {
@@ -140,5 +141,6 @@
   max-width: 250px; /* 최대 너비 설정 */
   position: sticky;
   top: 20px;
-  align-self: flex-start; /* 상단에 고정 */
+  align-self: center; /* 상단에 고정 */
+  margin-left: auto;
 }
