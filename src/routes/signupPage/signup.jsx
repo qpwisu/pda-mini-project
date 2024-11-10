@@ -46,7 +46,7 @@ export default function Signup() {
       return;
     }
 
-    fetch(`${API_BASE_URL}/users/api/v1/signup`, {
+    fetch(`${API_BASE_URL}/api/users/api/v1/signup`, {
       method: 'POST',
       body: JSON.stringify({
         username: name,
@@ -83,7 +83,7 @@ export default function Signup() {
       return;
     }
     // email verify api 요청.
-    fetch(`${API_BASE_URL}/users/api/v1/verify-email/${email}`, {
+    fetch(`${API_BASE_URL}/api/users/api/v1/verify-email/${email}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })

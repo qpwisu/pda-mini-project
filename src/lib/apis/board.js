@@ -2,7 +2,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function fetchBoardList() {
   try {
-    const res = await fetch(`${API_BASE_URL}/board`, {
+    const res = await fetch(`${API_BASE_URL}/api/board`, {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
@@ -17,7 +17,7 @@ export async function fetchBoardList() {
 
 export async function fetchBoardDetail(boardId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/board/${boardId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/board/${boardId}`, {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
