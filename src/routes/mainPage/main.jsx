@@ -11,6 +11,9 @@ import Modal from 'react-bootstrap/Modal';
 import { OffLoginModal, OffSignupModal } from '~/store/modalSlice';
 import Login from '../loginPage/login';
 import Signup from '../signupPage/signup';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function NewsCard({
   id,
   image = defaultImage,
@@ -111,7 +114,7 @@ export default function MainPage() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:8000/news/main')
+      .get(`${API_BASE_URL}/news/main`) // 백틱(`)으로 템플릿 리터럴 사용
       .then((response) => {
         setNewsList(response.data);
         console.log(response.data);

@@ -1,9 +1,8 @@
-// const BASE_URI = 'http://localhost:3000/api';
-const BASE_URI = '/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function serverLogin({ email, password }) {
   try {
-    const res = await fetch(`${BASE_URI}/users/login`, {
+    const res = await fetch(`${API_BASE_URL}/users/login`, {
       method: 'POST',
       body: JSON.stringify({
         email,

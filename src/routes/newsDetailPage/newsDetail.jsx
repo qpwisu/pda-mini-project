@@ -15,9 +15,7 @@ export default function NewsDetail() {
   const [tooltip, setTooltip] = useState({ text: '', x: 0, y: 0, show: false });
   const [btn, setBtn] = useState(false)
 
-  const apiUrl = process.env.REACT_APP_API_URL || ''; //  .env.production 때문에 사용하는데 잘 안됨
-
-  const apiUrl = process.env.REACT_APP_API_URL || '';
+  // const apiUrl = process.env.REACT_APP_API_URL || ''; //  .env.production 때문에 사용하는데 잘 안됨
 
   const isClikedBtn = async () => {
     //setBtn((prev) => !prev);

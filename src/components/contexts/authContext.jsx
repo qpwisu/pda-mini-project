@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useEffect, useState } from 'react';
 export const AuthContext = createContext();
 
 const AUTH_KEY = 'AUTH_USER';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -30,9 +31,10 @@ export default function AuthProvider({ children }) {
   }, []);
 
   //
+
   const checkLogin = useCallback(async () => {
     // 2번째 방법
-    const res = await fetch('/api/users/me');
+    const res = await fetch(`${API_BASE_URL}/users/me`);
     if (res.ok) {
       const user = res.json();
       setUser(user);
