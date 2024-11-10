@@ -1,25 +1,24 @@
 /* search.css */
+.container-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  padding-top: 20px;
+}
 
 .search-results-container {
   display: flex;
+  flex-direction: row;
+  max-width: 1100px; /* 중앙 위치를 위해 최대 너비 설정 */
   width: 100%;
-  max-width: 1200px;
-  margin: auto;
-  padding-top: 20px;
+  gap: 20px;
 }
 
 .search-results-content {
   flex-grow: 1;
-  max-width: 1200px;
-}
-
-.container-wrapper {
-  display: flex;
-  justify-content: center;
-  max-width: 1400px; /* 최대 너비 제한 */
-  width: 100%;
-  margin: auto;
-  padding-top: 20px;
+  width: 100%; /* 전체 컨테이너의 70% 너비로 설정 */
+  margin-left: 15rem;
 }
 
 .col-lg-8 {
@@ -28,6 +27,9 @@
 
 .results-section {
   min-height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .search-results-title {
   text-align: center;
@@ -39,7 +41,7 @@
 
 .search-results-content {
   flex-grow: 1;
-  max-width: 700px; /* 검색 결과의 최대 너비 제한 */
+  max-width: 80%; /* 중앙에 위치하도록 너비 조절 */
 }
 
 .result-card {
@@ -87,7 +89,7 @@
 
 .pagination-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   position: relative; /* 고정된 위치로 변경 */
   bottom: 0;
   left: 0;
@@ -132,4 +134,13 @@
 .links {
   text-decoration: 'none';
   color: 'inherit';
+}
+
+.sidebar {
+  width: 25%; /* sidebar의 너비 */
+  max-width: 250px; /* 최대 너비 설정 */
+  position: sticky;
+  top: 20px;
+  align-self: center; /* 상단에 고정 */
+  margin-left: auto;
 }
