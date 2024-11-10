@@ -3,12 +3,10 @@ import { useState } from 'react';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
 // import useAuth from '~/lib/hooks/useAuth';
-// import { serverLogout } from '~/lib/apis/auth';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'; // useSelector를 추가하여 Redux 상태를 가져옴
 import { logout } from '~/store/authSlice'; // 로그아웃 액션을 가져옴
 import { OnLoginModal, OnSignupModal } from '~/store/modalSlice';
-
 export default function MyNavbar({ brandTitle, offCanvasTitle }) {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();

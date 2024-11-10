@@ -5,6 +5,8 @@ import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
 import { loginSuccess, loginFailure } from '~/store/authSlice';
 import { OffLoginModal, OnSignupModal } from '~/store/modalSlice';
 import { Alert } from 'react-bootstrap';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
@@ -17,7 +19,7 @@ export default function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch('/api/users/api/v1/login', {
+    fetch(`${API_BASE_URL}/users/api/v1/login`, {
       method: 'POST',
       body: JSON.stringify({ email: email, password: password }),
       headers: { 'Content-type': 'application/json' },
