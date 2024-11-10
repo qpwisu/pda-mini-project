@@ -15,7 +15,7 @@ from pydantic import BaseModel
 └── /terms                    - 경제 용어에 대한 좋아요 API
     ├── GET    /terms               - 사용자가 좋아요한 모든 용어 조회
     ├── POST   /terms    - 용어 이름으로 좋아요 추가 
-    ├── POST   /terms/{term_id}     - 용어에 좋아요 추가
+    ├── POST   /terms/{term_id}     - 용어Id 좋아요 추가
     ├── DELETE /terms/{term_id}     - 용어 좋아요 취소
     ├── GET    /terms/{term}/status - 특정 용어에 대한 좋아요 여부 확인
 """
@@ -32,6 +32,7 @@ class Data(BaseModel):
 
 # 유저 인증 함수
 def verify_user(access_token: str = Cookie(None)):
+    print(access_token)
     if access_token is None or not access_token.startswith("Bearer "):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not authenticated")
     token = access_token[len("Bearer "):]

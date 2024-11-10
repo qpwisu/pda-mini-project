@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://3.36.99.137"],  # 허용할 도메인 (프론트엔드 주소)
@@ -20,13 +21,13 @@ app.add_middleware(
 )
 
 # 각 도메인의 라우터를 등록
-app.include_router(comment_router.router, prefix="/comments", tags=["comments"])
-app.include_router(like_router.router, prefix="/likes", tags=["likes"])
-app.include_router(news_router.router, prefix="/news", tags=["news"])
-app.include_router(term_router.router, prefix="/terms", tags=["terms"])
-app.include_router(user_router.router, prefix="/users", tags=["users"])
-app.include_router(my_page_router.router, prefix="/mypage", tags=["mypage"])
-app.include_router(search_router.router, prefix="/search", tags=["search"])
+app.include_router(comment_router.router, prefix="/api/comments", tags=["comments"])
+app.include_router(like_router.router, prefix="/api/likes", tags=["likes"])
+app.include_router(news_router.router, prefix="/api/news", tags=["news"])
+app.include_router(term_router.router, prefix="/api/terms", tags=["terms"])
+app.include_router(user_router.router, prefix="/api/users", tags=["users"])
+app.include_router(my_page_router.router, prefix="/api/mypage", tags=["mypage"])
+app.include_router(search_router.router, prefix="/api/search", tags=["search"])
 
 
 @app.get("/")
