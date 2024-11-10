@@ -19,7 +19,7 @@ export default function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch(`${API_BASE_URL}/users/api/v1/login`, {
+    fetch(`${API_BASE_URL}/api/users/api/v1/login`, {
       method: 'POST',
       body: JSON.stringify({ email: email, password: password }),
       headers: { 'Content-type': 'application/json' },

@@ -12,7 +12,7 @@ async function fetchNewsBytitle(first_keyword, secondKeyword, page, pageSize) {
     params.append('page', 1);
     params.append('page_size', 100);
 
-    const res = await fetch(`${API_BASE_URL}/search/title?${params.toString()}`, {
+    const res = await fetch(`${API_BASE_URL}/api/search/title?${params.toString()}`, {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
@@ -28,7 +28,7 @@ async function fetchNewsBytitle(first_keyword, secondKeyword, page, pageSize) {
 
 async function fetchAutocompleteSuggestions(input) {
   try {
-    const res = await fetch(`${API_BASE_URL}/search/autocomplete?prefix=${input}`, {
+    const res = await fetch(`${API_BASE_URL}/api/search/autocomplete?prefix=${input}`, {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
