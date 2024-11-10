@@ -4,6 +4,10 @@ import { Form, Button, Card, InputGroup, Alert } from 'react-bootstrap';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { OffSignupModal, OnLoginModal } from '~/store/modalSlice';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -42,7 +46,7 @@ export default function Signup() {
       return;
     }
 
-    fetch('/api/users/api/v1/signup', {
+    fetch(`${API_BASE_URL}/users/api/v1/signup`, {
       method: 'POST',
       body: JSON.stringify({
         username: name,
@@ -79,7 +83,7 @@ export default function Signup() {
       return;
     }
     // email verify api 요청.
-    fetch(`/api/users/api/v1/verify-email/${email}`, {
+    fetch(`${API_BASE_URL}/users/api/v1/verify-email/${email}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })

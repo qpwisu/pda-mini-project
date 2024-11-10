@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './myTerm.css';
 import axios from 'axios';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function MyTerm() {
   const [terms, setTerms] = useState([]); // 좋아요 누른 용어 목록
@@ -12,7 +13,7 @@ export default function MyTerm() {
   useEffect(() => {
     const fetchLikedTerms = async () => {
       try {
-        const response = await axios.get('/api/likes/terms', {
+        const response = await axios.get(`${API_BASE_URL}/likes/terms`, {
           withCredentials: true,
         });
         setTerms(response.data.liked_terms || []);
@@ -29,7 +30,7 @@ export default function MyTerm() {
     setSearchTerm(e.target.value);
     if (e.target.value.length > 0) {
       try {
-        const response = await axios.get(`/api/search/autocomplete?prefix=${e.target.value}`);
+        const response = await axios.get(`${API_BASE_URL}/search/autocomplete?prefix=${e.target.value}`);
         setSuggestions(response.data.terms || []);
       } catch (error) {
         console.error("Failed to fetch autocomplete suggestions:", error);
@@ -52,7 +53,7 @@ const handleAddTerm = async (selectedTerm) => {
   if (selectedTerm) {
     try {
       const response = await axios.post(
-        `/api/likes/terms`,
+        `${API_BASE_URL}/likes/terms`,
         { term: selectedTerm.term },
         {
           headers: { "Content-Type": "application/json" },
@@ -82,7 +83,7 @@ const handleAddTerm = async (selectedTerm) => {
   // 용어 삭제
   const handleDelete = async (termId) => {
     try {
-      await axios.delete(`/api/likes/terms/${termId}`, {
+      await axios.delete(`${API_BASE_URL}/likes/terms/${termId}`, {
         withCredentials: true,
       });
       setTerms(terms.filter(term => term.idx !== termId));

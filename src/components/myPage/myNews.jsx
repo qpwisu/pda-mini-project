@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './myNews.css';
 import axios from 'axios';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function MyNews() {
   const [news, setNews] = useState([]); // 좋아요 누른 뉴스 목록
@@ -11,7 +12,7 @@ export default function MyNews() {
   useEffect(() => {
     const fetchLikedNews = async () => {
       try {
-        const response = await axios.get('/api/likes/news', {
+        const response = await axios.get(`${API_BASE_URL}/likes/news`, {
           withCredentials: true,
         });
         console.log("Rendering news item with id:", response.data);
@@ -26,7 +27,7 @@ export default function MyNews() {
   // 뉴스 좋아요 취소 함수
   const handleDelete = async (newsId) => {
     try {
-      await axios.delete(`/api/likes/news/${newsId}`, { // 새로운 엔드포인트 사용
+      await axios.delete(`${API_BASE_URL}/likes/news/${newsId}`, { // 새로운 엔드포인트 사용
         withCredentials: true,
       });
       setNews(news.filter(item => item.news_id !== newsId));
