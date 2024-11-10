@@ -16,7 +16,7 @@ import Layout from '~/components/common/Layout';
 
 import MyPage from '~/routes/myPage/myPage';
 import SignUp from '~/routes/signupPage/signup';
-import NewsDetail from '~/routes/newsDetailPage/NewsDetail';
+import NewsDetail from '~/routes/newsDetailPage/newsDetail';
 import Search from '~/routes/searchPage/search';
 import Login from '~/routes/loginPage/login';
 
