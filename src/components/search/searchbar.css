@@ -12,8 +12,8 @@
 
 .search-bar-input {
   border: 1px solid #ddd;
-  border-radius: 25px;
-  padding: 10px 40px 10px 20px; /* 오른쪽 아이콘 공간 확보 */
+  border-radius: 25px 0 0 25px; /* 왼쪽은 둥글고 오른쪽은 직각 */
+  padding: 10px 40px 10px 20px;
   font-weight: bold;
   color: #e34348;
   outline: none;
@@ -23,23 +23,24 @@
   width: 100%;
 }
 
+.search-bar-button {
+  border: 1px solid #ddd;
+  border-left: none; /* 입력 필드와 겹치는 경계선 제거 */
+  border-radius: 0 25px 25px 0; /* 오른쪽만 둥글게 */
+  color: #e34348;
+  background-color: transparent;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
 .search-bar-input:focus {
   color: #e34348;
   border-color: #e34348;
   box-shadow: 0 0 5px rgba(227, 67, 72, 0.5);
-}
-
-.search-bar-button {
-  border: none;
-  background-color: transparent;
-  color: #e34348;
-  position: absolute;
-  right: 30px; /* 입력 필드 오른쪽에 고정 */
-  top: 50%;
-  transform: translateY(-50%); /* 세로로 가운데 정렬 */
-  font-size: 1.2rem;
-  padding: 0;
-  cursor: pointer;
 }
 
 .suggestions-dropdown {
