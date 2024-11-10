@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Button, Card } from 'react-bootstrap';
 import { ChevronLeft, ChevronRight } from 'react-bootstrap-icons';
@@ -17,25 +17,28 @@ export default function Search() {
   const resultsPerPage = 3;
   const location = useLocation();
 
-  const fetchInitialResults = async (title) => {
+  const fetchInitialResults = useCallback(async (title) => {
     const response = await fetchNewsBytitle(title, 1, 100);
     setResults([...response.results]);
-  };
+  }, []);
 
-  const fetchFilteredResults = async (firstKeyword, secondKeyword) => {
-    const response = await fetchNewsBytitle(
-      firstKeyword,
-      secondKeyword,
-      1,
-      100
-    );
-    setResults([...response.results]);
-  };
+  const fetchFilteredResults = useCallback(
+    async (firstKeyword, secondKeyword) => {
+      const response = await fetchNewsBytitle(
+        firstKeyword,
+        secondKeyword,
+        1,
+        100
+      );
+      setResults([...response.results]);
+    },
+    []
+  );
 
   useEffect(() => {
     const title = location.state.query;
     fetchInitialResults(title, secondKeyword);
-  }, [location.state.query]);
+  }, [location.state.query, fetchInitialResults]);
 
   useEffect(() => {
     setTotalPages(Math.ceil(results.length / resultsPerPage));
@@ -47,25 +50,26 @@ export default function Search() {
     );
   }, [results, currentPage]);
 
-  const handleSecondarySearch = () => {
+  const handleSecondarySearch = useCallback(() => {
     const title = location.state.query;
     fetchFilteredResults(title, secondKeyword);
     setCurrentPage(1); // 새로운 검색 시 페이지를 초기화
-  };
+  }, [location.state.query, secondKeyword, fetchFilteredResults]);
 
   return (
     <>
-      <div className="container-wrapper d-flex justify-content-center">
-        <div className="search-results-container d-flex justify-content-center">
+      <div className="container-wrapper">
+        <div className="search-results-container">
           {/* 검색 결과 영역 */}
           <div className="search-results-content">
             <h1 className="search-results-title display-5">검색 결과</h1>
+
             <SearchBar
               onSecondarySearch={(keyword) => setSecondKeyword(keyword)}
               onSearch={handleSecondarySearch}
             />
 
-            <div className="results-section d-flex justify-content-center align-items-center mb-5 mt-5">
+            <div className="results-section mb-5 mt-5">
               {currentResults.length > 0 ? (
                 <div>
                   {currentResults.map((result) => (
@@ -124,7 +128,7 @@ export default function Search() {
           </div>
 
           {/* 사이드바 영역 */}
-          <div className="ms-4 justify-content-end">
+          <div className="sidebar">
             <PopularTermsSidebar />
           </div>
         </div>
