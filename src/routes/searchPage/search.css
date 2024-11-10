@@ -1,7 +1,6 @@
-/* search.css */
 .container-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: flex-start;
   width: 100%;
   padding-top: 20px;
@@ -10,19 +9,15 @@
 .search-results-container {
   display: flex;
   flex-direction: row;
-  max-width: 1100px; /* 중앙 위치를 위해 최대 너비 설정 */
+  max-width: 1100px;
   width: 100%;
   gap: 20px;
 }
 
 .search-results-content {
   flex-grow: 1;
-  width: 100%; /* 전체 컨테이너의 70% 너비로 설정 */
-  margin-left: 15rem;
-}
-
-.col-lg-8 {
-  flex-grow: 1;
+  width: 100%;
+  margin-left: 14rem;
 }
 
 .results-section {
@@ -31,17 +26,13 @@
   justify-content: center;
   align-items: center;
 }
+
 .search-results-title {
   text-align: center;
   font-size: 2rem;
   font-weight: bold;
   color: #e34348;
   margin-bottom: 40px;
-}
-
-.search-results-content {
-  flex-grow: 1;
-  max-width: 80%; /* 중앙에 위치하도록 너비 조절 */
 }
 
 .result-card {
@@ -89,14 +80,15 @@
 
 .pagination-container {
   display: flex;
-  justify-content: space-evenly;
-  position: relative; /* 고정된 위치로 변경 */
+  justify-content: space-between;
+  position: sticky;
   bottom: 0;
   left: 0;
   right: 0;
   padding: 1rem;
   background-color: white;
-  z-index: 15; /* 다른 요소 위에 표시되도록 설정 */
+  z-index: 15;
+  width: 100%;
 }
 
 .pagination-button {
@@ -125,22 +117,162 @@
   font-weight: bold;
 }
 
-.next-buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* 필요에 따라 left, right로 조정 가능합니다 */
-}
-
-.links {
-  text-decoration: 'none';
-  color: 'inherit';
-}
-
 .sidebar {
-  width: 25%; /* sidebar의 너비 */
-  max-width: 250px; /* 최대 너비 설정 */
+  width: 25%;
+  max-width: 250px;
   position: sticky;
-  top: 20px;
-  align-self: center; /* 상단에 고정 */
-  margin-left: auto;
+  align-self: center;
+}
+
+/* 320px 이하: 작은 모바일 기기 */
+@media (max-width: 320px) {
+  .search-results-title {
+    font-size: 1.2rem;
+  }
+
+  .result-card {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .result-card-title {
+    font-size: 1rem;
+  }
+
+  .result-card-summary {
+    font-size: 0.75rem;
+  }
+}
+
+/* 480px 이하: 일반적인 모바일 기기 */
+@media (max-width: 480px) {
+  .search-results-title {
+    font-size: 1.3rem;
+  }
+
+  .result-card {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .result-card-title {
+    font-size: 1.1rem;
+  }
+
+  .result-card-summary {
+    font-size: 0.8rem;
+  }
+}
+
+/* 768px 이하: 태블릿 세로 모드 */
+@media (max-width: 768px) {
+  .search-results-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-results-content {
+    width: 90%;
+    margin-left: 0;
+  }
+
+  .search-results-title {
+    font-size: 1.5rem;
+  }
+
+  .result-card {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .result-card-title {
+    font-size: 1.125rem;
+  }
+
+  .result-card-summary {
+    font-size: 0.875rem;
+  }
+
+  .sidebar {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-top: 20px;
+  }
+}
+
+/* 1024px 이하: 태블릿 가로 모드 */
+@media (max-width: 1024px) {
+  .search-results-title {
+    font-size: 1.75rem;
+  }
+
+  .result-card-title {
+    font-size: 1.2rem;
+  }
+
+  .result-card-summary {
+    font-size: 0.9rem;
+  }
+
+  .sidebar {
+    width: 30%;
+  }
+}
+
+/* 1280px 이하: 작은 데스크톱 */
+@media (max-width: 1280px) {
+  .search-results-title {
+    font-size: 2rem;
+  }
+
+  .result-card-title {
+    font-size: 1.25rem;
+  }
+
+  .result-card-summary {
+    font-size: 1rem;
+  }
+
+  .sidebar {
+    width: 25%;
+  }
+}
+
+/* 1440px 이하: 일반 데스크톱 */
+@media (max-width: 1440px) {
+  .search-results-title {
+    font-size: 2.2rem;
+  }
+
+  .result-card-title {
+    font-size: 1.3rem;
+  }
+
+  .result-card-summary {
+    font-size: 1.05rem;
+  }
+
+  .sidebar {
+    width: 20%;
+  }
+}
+
+/* 1920px 이하: 큰 데스크톱 */
+@media (max-width: 1920px) {
+  .search-results-title {
+    font-size: 2.5rem;
+  }
+
+  .result-card-title {
+    font-size: 1.4rem;
+  }
+
+  .result-card-summary {
+    font-size: 1.1rem;
+  }
+
+  .sidebar {
+    width: 18%;
+  }
 }
