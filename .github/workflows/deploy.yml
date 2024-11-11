@@ -1,57 +1,57 @@
-name: Deploy React App to EC2
+# name: Deploy React App to EC2
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # 최신 커밋을 가져오기 위해 모든 커밋을 가져옴
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0  # 최신 커밋을 가져오기 위해 모든 커밋을 가져옴
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22'  # 프로젝트에 맞는 Node.js 버전으로 설정
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: '22'  # 프로젝트에 맞는 Node.js 버전으로 설정
 
-      - name: Install dependencies
-        run: npm install
+#       - name: Install dependencies
+#         run: npm install
 
-      - name: Build project
-        env:
-          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
-        run: npm run build
+#       - name: Build project
+#         env:
+#           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+#         run: npm run build
 
-      - name: Verify dist directory
-        run: |
-          if [ ! -d "dist" ]; then
-            echo "dist directory not found. Build may have failed."
-            exit 1
-          fi
-          echo "dist directory found. Build succeeded."
+#       - name: Verify dist directory
+#         run: |
+#           if [ ! -d "dist" ]; then
+#             echo "dist directory not found. Build may have failed."
+#             exit 1
+#           fi
+#           echo "dist directory found. Build succeeded."
 
-      - name: Deploy to EC2
-        if: success()  # 빌드가 성공했을 경우에만 배포 진행
-        env:
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USER: ${{ secrets.EC2_USER }}
-          EC2_KEY: ${{ secrets.EC2_KEY }}
-        run: |
-          # SSH 키 파일 생성 및 권한 설정
-          echo "${EC2_KEY}" > team_member_key
-          chmod 600 team_member_key
+#       - name: Deploy to EC2
+#         if: success()  # 빌드가 성공했을 경우에만 배포 진행
+#         env:
+#           EC2_HOST: ${{ secrets.EC2_HOST }}
+#           EC2_USER: ${{ secrets.EC2_USER }}
+#           EC2_KEY: ${{ secrets.EC2_KEY }}
+#         run: |
+#           # SSH 키 파일 생성 및 권한 설정
+#           echo "${EC2_KEY}" > team_member_key
+#           chmod 600 team_member_key
       
-          # EC2 서버에 빌드 파일 전송
-          scp -o StrictHostKeyChecking=no -i team_member_key -r dist/* ${EC2_USER}@${EC2_HOST}:/home/ubuntu/pda_data/pda-news-frontend/dist
+#           # EC2 서버에 빌드 파일 전송
+#           scp -o StrictHostKeyChecking=no -i team_member_key -r dist/* ${EC2_USER}@${EC2_HOST}:/home/ubuntu/pda_data/pda-news-frontend/dist
 
-          # Nginx 재시작
-          ssh -o StrictHostKeyChecking=no -i team_member_key ${EC2_USER}@${EC2_HOST} "sudo systemctl restart nginx"
+#           # Nginx 재시작
+#           ssh -o StrictHostKeyChecking=no -i team_member_key ${EC2_USER}@${EC2_HOST} "sudo systemctl restart nginx"
 
-          # 배포 후 키 파일 제거
-          rm team_member_key
+#           # 배포 후 키 파일 제거
+#           rm team_member_key
