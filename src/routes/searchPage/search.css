@@ -119,10 +119,10 @@
 
 .sidebar {
   width: 25%;
+  margin-top: 5rem;
   max-width: 250px;
-  position: relative;
-  justify-self: self-end;
-  align-self: center;
+  position: sticky;
+  align-self: flex-start;
 }
 
 /* 320px 이하: 작은 모바일 기기 */
