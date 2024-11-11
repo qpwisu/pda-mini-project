@@ -56,4 +56,4 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i team_member_key ${EC2_USER}@${EC2_HOST} "sudo systemctl restart nginx"
 
           # 배포 후 키 파일 제거
-\          rm team_member_key
+          rm team_member_key
