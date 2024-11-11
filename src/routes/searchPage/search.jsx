@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Button, Card } from 'react-bootstrap';
 import { ChevronLeft, ChevronRight } from 'react-bootstrap-icons';
+import Container from 'react-bootstrap/Container';
 import { fetchNewsBytitle } from '~/lib/apis/search';
 import { useSelector, useDispatch } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -80,18 +81,42 @@ export default function Search() {
 
   return (
     <>
+      <div>
+        <Container
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '60px',
+          }}
+        >
+          <h2>
+            <b>Economy&nbsp;</b>
+          </h2>
+          <h2 style={{ color: '#E34348' }}>
+            <b>News</b>
+          </h2>
+        </Container>
+
+        <Container
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingBottom: '60px',
+          }}
+        >
+          <SearchBar
+            onSecondarySearch={handleSecondarySearch} // 결과 내 검색어 설정
+            onSearch={() => fetchFilteredResults()} // 결과 내 검색 실행
+            isSecondarySearch={!!firstKeyword} // firstKeyword가 있을 때만 결과 내 검색 모드로 설정
+          />
+        </Container>
+      </div>
       <div className="container-wrapper">
         <div className="search-results-container">
           <div className="search-results-content">
-            <h1 className="search-results-title display-5">검색 결과</h1>
-
-            <SearchBar
-              onSecondarySearch={handleSecondarySearch} // 결과 내 검색어 설정
-              onSearch={() => fetchFilteredResults()} // 결과 내 검색 실행
-              isSecondarySearch={!!firstKeyword} // firstKeyword가 있을 때만 결과 내 검색 모드로 설정
-            />
-
-            <div className="results-section mb-5 mt-5">
+            <div className="results-section">
               {currentResults.length > 0 ? (
                 <div>
                   {currentResults.map((result) => (

@@ -23,15 +23,21 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set environment variables
+      - name: Build project
         env:
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
-        run: echo "Environment variables set"
-
-      - name: Build project
         run: npm run build
 
+      - name: Verify dist directory
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "dist directory not found. Build may have failed."
+            exit 1
+          fi
+          echo "dist directory found. Build succeeded."
+
       - name: Deploy to EC2
+        if: success()  # 빌드가 성공했을 경우에만 배포 진행
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
@@ -40,15 +46,12 @@ jobs:
           # SSH 키 파일 생성 및 권한 설정
           echo "${EC2_KEY}" > team_member_key
           chmod 600 team_member_key
+      
+          # EC2 서버에 빌드 파일 전송
+          scp -o StrictHostKeyChecking=no -i team_member_key -r dist/* ${EC2_USER}@${EC2_HOST}:/home/ubuntu/pda_data/pda-news-frontend/dist
 
-          # EC2 서버의 지정 경로에 빌드 파일 전송 (scp 옵션 최적화)
-          scp -o StrictHostKeyChecking=no -i team_member_key -r dist/* ${EC2_USER}@${EC2_HOST}:/home/ubuntu/pda_data/pda-news-frontend/
-      
-          # EC2 서버에서 파일의 소유자와 권한 확인 및 설정
-          ssh -o StrictHostKeyChecking=no -i team_member_key ${EC2_USER}@${EC2_HOST} "sudo chown -R www-data:www-data /home/ubuntu/pda_data/pda-news-frontend && sudo chmod -R 755 /home/ubuntu/pda_data/pda-news-frontend"
-      
           # Nginx 재시작
           ssh -o StrictHostKeyChecking=no -i team_member_key ${EC2_USER}@${EC2_HOST} "sudo systemctl restart nginx"
-      
+
           # 배포 후 키 파일 제거
           rm team_member_key
