@@ -5,10 +5,15 @@ import { useLocation, Link } from 'react-router-dom';
 import { Button, Card } from 'react-bootstrap';
 import { ChevronLeft, ChevronRight } from 'react-bootstrap-icons';
 import { fetchNewsBytitle } from '~/lib/apis/search';
+import { useSelector, useDispatch } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './search.css';
 import SearchBar from '~/components/search/searchbar';
 import PopularTermsSidebar from '~/components/popularTerm/popularTermSidebar';
+import Modal from 'react-bootstrap/Modal';
+import Login from '../loginPage/login';
+import Signup from '../signupPage/signup';
+import { OffLoginModal, OffSignupModal } from '~/store/modalSlice';
 
 export default function Search() {
   const location = useLocation();
@@ -20,8 +25,20 @@ export default function Search() {
   const [totalPages, setTotalPages] = useState(1);
   const [results, setResults] = useState([]);
   const [currentResults, setCurrentResults] = useState([]);
-
+  const { isLoginModal, isSignupModal } = useSelector((state) => state.modal);
   // 첫 검색: `firstKeyword`로만 수행
+
+  // const apiUrl = process.env.REACT_APP_API_URL || ''; //  .env.production 때문에 사용하는데 잘 안됨
+  const dispatch = useDispatch();
+  // login modal창 닫기
+  const CloseLoginModal = () => {
+    dispatch(OffLoginModal());
+  };
+  // signup modal창 닫기
+  const CloseSignupModal = () => {
+    dispatch(OffSignupModal());
+  };
+
   const fetchInitialResults = useCallback(async () => {
     const response = await fetchNewsBytitle(firstKeyword, '', 1, 100);
     setResults(response.results || []);
@@ -136,6 +153,33 @@ export default function Search() {
             <PopularTermsSidebar />
           </div>
         </div>
+        {/* 로그인 모달 */}
+        <Modal show={isLoginModal} onHide={CloseLoginModal} centered>
+          <Modal.Header
+            style={{ borderBottom: 'none' }}
+            closeButton
+          ></Modal.Header>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Login />
+          </div>
+          <Modal.Footer
+            style={{ padding: '19px', borderTop: 'none' }}
+          ></Modal.Footer>
+        </Modal>
+
+        {/* 회원가입 모달 */}
+        <Modal show={isSignupModal} onHide={CloseSignupModal} centered>
+          <Modal.Header
+            style={{ borderBottom: 'none' }}
+            closeButton
+          ></Modal.Header>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Signup />
+          </div>
+          <Modal.Footer
+            style={{ padding: '19px', borderTop: 'none' }}
+          ></Modal.Footer>
+        </Modal>
       </div>
     </>
   );
