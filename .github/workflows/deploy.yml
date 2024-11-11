@@ -23,12 +23,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set environment variables
+      - name: Build project
         env:
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
-        run: echo "Environment variables set"
-
-      - name: Build project
         run: npm run build
 
       - name: Verify dist directory
@@ -50,6 +47,7 @@ jobs:
           echo "${EC2_KEY}" > team_member_key
           chmod 600 team_member_key
       
+          # EC2 서버에 빌드 파일 전송
           scp -o StrictHostKeyChecking=no -i team_member_key -r dist/* ${EC2_USER}@${EC2_HOST}:/home/ubuntu/pda_data/pda-news-frontend/
 
           # Nginx 재시작
