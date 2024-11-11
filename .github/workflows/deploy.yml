@@ -41,10 +41,13 @@ jobs:
           echo "${EC2_KEY}" > team_member_key
           chmod 600 team_member_key
 
-          # EC2 서버의 지정 경로에 빌드 파일 전송 (scp 옵션 최적화)
+          # EC2 서버의 기존 파일 삭제
+          ssh -o StrictHostKeyChecking=no -i team_member_key ${EC2_USER}@${EC2_HOST} "rm -rf /home/ubuntu/pda_data/pda-news-frontend/*"
+
+          # EC2 서버의 지정 경로에 빌드 파일 전송
           scp -o StrictHostKeyChecking=no -i team_member_key -r dist/* ${EC2_USER}@${EC2_HOST}:/home/ubuntu/pda_data/pda-news-frontend/
       
-          # EC2 서버에서 파일의 소유자와 권한 확인 및 설정
+          # EC2 서버에서 소유권 및 권한 설정
           ssh -o StrictHostKeyChecking=no -i team_member_key ${EC2_USER}@${EC2_HOST} "sudo chown -R www-data:www-data /home/ubuntu/pda_data/pda-news-frontend && sudo chmod -R 755 /home/ubuntu/pda_data/pda-news-frontend"
       
           # Nginx 재시작
