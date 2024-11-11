@@ -1,4 +1,5 @@
 // src/routes/newsDetailPage/newsDetail.jsx
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import DOMPurify from 'dompurify';
@@ -14,26 +15,73 @@ export default function NewsDetail() {
   const [articleData, setArticleData] = useState(null);
   const [tooltip, setTooltip] = useState({ text: '', x: 0, y: 0, show: false });
   const [btn, setBtn] = useState(false)
+  const [likieNewsList, setLikeNewsList] = useState([])
 
   // const apiUrl = process.env.REACT_APP_API_URL || ''; //  .env.production 때문에 사용하는데 잘 안됨
 
-  const isClikedBtn = async () => {
-    //setBtn((prev) => !prev);
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/likes/news/${idx}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ news_id: idx }),
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to like the article');
+  useEffect(() => {
+    const fetchLikedNewsList = async () => {
+      try {
+        const likedResponse = await axios.get(
+          `${API_BASE_URL}/api/likes/news`, 
+          {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+          }
+        );
+        const newsIds = likedResponse.data.liked_news.map((item) => item.news_id);
+        setLikeNewsList(newsIds);
+        console.log(newsIds)
+        if(newsIds.includes(Number(idx))){
+          setBtn(true);
+        } else {
+          setBtn(false);
+        }
+      } catch (error) {
+        console.error('Error fetching liked news list:', error);
       }
-      setBtn((prev) => !prev);
-    } catch (error) {
-      console.error('Error sending like request:', error);
+    };
+  
+    fetchLikedNewsList(); // Call the function
+  }, [idx]);
+
+  const isClikedBtn = async () => {
+    console.log("click")
+    console.log(btn)
+    if (btn === false) {
+      try {
+        const response = await axios.post(
+          `${API_BASE_URL}/api/likes/news/${idx}`,
+          { news_id: idx },
+          {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+          }
+        );
+        if (response.status !== 200) {
+          throw new Error('Failed to like the article');
+        }
+        setBtn((prev) => !prev);
+      } catch (error) {
+        console.error('Error sending like request:', error);
+      }
+    } else if (btn === true) {
+      try {
+        // DELETE 요청
+        const response = await axios.delete(
+            `${API_BASE_URL}/api/likes/news/${idx}`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            }
+        );
+        if (response.status !== 200 && response.status !== 204) {
+            throw new Error('Failed to unlike the article');
+        }
+        setBtn((prev) => !prev);
+      } catch (error) {
+        console.error('Error sending unlike request:', error);
+    }
     }
   };
 
