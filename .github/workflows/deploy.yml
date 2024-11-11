@@ -48,7 +48,7 @@ jobs:
           chmod 600 team_member_key
       
           # EC2 서버에 빌드 파일 전송
-          scp -o StrictHostKeyChecking=no -i team_member_key -r dist/* ${EC2_USER}@${EC2_HOST}:/home/ubuntu/pda_data/pda-news-frontend/
+          scp -o StrictHostKeyChecking=no -i team_member_key -r dist/* ${EC2_USER}@${EC2_HOST}:/home/ubuntu/pda_data/pda-news-frontend/dist
 
           # Nginx 재시작
           ssh -o StrictHostKeyChecking=no -i team_member_key ${EC2_USER}@${EC2_HOST} "sudo systemctl restart nginx"

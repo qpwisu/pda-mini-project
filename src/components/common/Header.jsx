@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'; // useSelector를 추가하여 Redux 상태를 가져옴
 import { logout } from '~/store/authSlice'; // 로그아웃 액션을 가져옴
 import { OnLoginModal, OnSignupModal } from '~/store/modalSlice';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export default function MyNavbar({ brandTitle, offCanvasTitle }) {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
@@ -17,6 +18,19 @@ export default function MyNavbar({ brandTitle, offCanvasTitle }) {
 
   // 로그아웃 버튼 클릭 시
   const handleLogout = () => {
+    fetch(`${API_BASE_URL}/api/users/api/v1/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+      .then((resp) => {
+        return resp.json;
+      })
+      .then((data) => {
+        console.log(data);
+      });
     sessionStorage.clear();
     dispatch(logout()); // 로그아웃 액션 dispatch
     navigate('/'); // 메인 페이지로 이동
