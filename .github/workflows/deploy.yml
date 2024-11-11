@@ -50,13 +50,7 @@ jobs:
           echo "${EC2_KEY}" > team_member_key
           chmod 600 team_member_key
       
-          # EC2 서버에서 기존 dist 디렉토리 삭제 전 권한 및 소유자 설정
-          ssh -o StrictHostKeyChecking=no -i team_member_key ${EC2_USER}@${EC2_HOST} "sudo chown -R ${EC2_USER}:${EC2_USER} /home/ubuntu/pda_data/pda-news-frontend && sudo chmod -R 755 /home/ubuntu/pda_data/pda-news-frontend"
-          
-          # EC2 서버의 기존 dist 디렉토리 삭제
-          ssh -o StrictHostKeyChecking=no -i team_member_key ${EC2_USER}@${EC2_HOST} "rm -rf /home/ubuntu/pda_data/pda-news-frontend/dist/*"
-      
-          # EC2 서버의 dist 디렉토리에 빌드 파일 전송
+          # EC2 서버의 dist 디렉토리에 빌드 파일 전송 (삭제 없이 추가)
           scp -o StrictHostKeyChecking=no -i team_member_key -r dist/* ${EC2_USER}@${EC2_HOST}:/home/ubuntu/pda_data/pda-news-frontend/dist/
           
           # Nginx 재시작
