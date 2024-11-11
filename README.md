@@ -49,7 +49,11 @@
 - **백엔드**: FastAPI (Python)
 - **배포**: AWS EC2, GitHub Actions
 - **서버 관리**: Nginx, PM2 (백엔드 프로세스 관리)
-- **데이터베이스**: PostgreSQL
+- **데이터베이스**: mysql
+    ![image](https://github.com/user-attachments/assets/104d1454-2560-473b-8081-267b1f386244)
+
+    ![image (1)](https://github.com/user-attachments/assets/4a225ddb-0f37-4459-ba00-3ea44f195a3a)
+
 
 ## 설치 방법
 
