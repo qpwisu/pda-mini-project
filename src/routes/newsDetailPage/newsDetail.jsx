@@ -11,7 +11,11 @@ import clickBtn2 from '../../assets/clickBtn2.svg';
 import Modal from 'react-bootstrap/Modal';
 import Login from '../loginPage/login';
 import Signup from '../signupPage/signup';
-import { OffLoginModal, OffSignupModal } from '~/store/modalSlice';
+import {
+  OffLoginModal,
+  OffSignupModal,
+  OnLoginModal,
+} from '~/store/modalSlice';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function NewsDetail() {
@@ -24,6 +28,10 @@ export default function NewsDetail() {
 
   // const apiUrl = process.env.REACT_APP_API_URL || ''; //  .env.production 때문에 사용하는데 잘 안됨
   const dispatch = useDispatch();
+
+  const OpenLoginModal = () => {
+    dispatch(OnLoginModal());
+  };
   // login modal창 닫기
   const CloseLoginModal = () => {
     dispatch(OffLoginModal());
@@ -79,7 +87,8 @@ export default function NewsDetail() {
         }
         setBtn((prev) => !prev);
       } catch (error) {
-        console.error('Error sending like request:', error);
+        console.error('Error sending like request111:', error);
+        OpenLoginModal();
       }
     } else if (btn === true) {
       try {
