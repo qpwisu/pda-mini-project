@@ -50,11 +50,11 @@ jobs:
           echo "${EC2_KEY}" > team_member_key
           chmod 600 team_member_key
       
-          # EC2 서버의 dist 디렉토리에 빌드 파일 전송 (삭제 없이 추가)
-          scp -o StrictHostKeyChecking=no -i team_member_key -r dist/* ${EC2_USER}@${EC2_HOST}:/home/ubuntu/pda_data/pda-news-frontend/dist/
-          
+          scp -o StrictHostKeyChecking=no -i team_member_key -r dist/* ${EC2_USER}@${EC2_HOST}:/home/ubuntu/pda_data/pda-news-frontend/
+
           # Nginx 재시작
           ssh -o StrictHostKeyChecking=no -i team_member_key ${EC2_USER}@${EC2_HOST} "sudo systemctl restart nginx"
-          
+
           # 배포 후 키 파일 제거
+          rm key
           rm team_member_key
